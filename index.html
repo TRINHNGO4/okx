@@ -2,2157 +2,903 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HL Tracker — Hyperliquid Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>HL Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg-0: #080c10;
-    --bg-1: #0d1117;
-    --bg-2: #161b22;
-    --bg-3: #1e2530;
-    --border: #2a3441;
-    --border-bright: #3d4f63;
-    --text-0: #e6edf3;
-    --text-1: #8b949e;
-    --text-2: #6e7681;
-    --accent: #58a6ff;
-    --accent-dim: #1f3a5c;
-    --green: #3fb950;
-    --green-dim: #1a3a22;
-    --red: #f85149;
-    --red-dim: #3a1a1a;
-    --yellow: #d29922;
-    --yellow-dim: #3a2e0a;
-    --purple: #bc8cff;
-    --purple-dim: #2a1f3a;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
-  }
+:root{
+  /* LIGHT THEME */
+  --bg0:#f5f6fa;--bg1:#ffffff;--bg2:#ffffff;--bg3:#f8f9fc;--bg4:#eef0f6;
+  --b1:rgba(0,0,0,.07);--b2:rgba(0,0,0,.1);--b3:rgba(0,0,0,.15);
+  --t1:#111827;--t2:#6b7280;--t3:#9ca3af;
+  --g:#059669;--gd:rgba(5,150,105,.1);--gb:rgba(5,150,105,.18);
+  --r:#dc2626;--rd:rgba(220,38,38,.1);--rb:rgba(220,38,38,.16);
+  --a:#2563eb;--ad:rgba(37,99,235,.1);
+  --y:#d97706;--p:#7c3aed;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.06);
+  --mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+html,body{height:100%;background:var(--bg0);color:var(--t1);font-family:var(--sans);overflow:hidden}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ── TOPBAR ── */
+.topbar{flex-shrink:0;height:50px;background:var(--bg1);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-shadow:var(--shadow)}
+.logo{font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:-.3px;color:var(--t1)}
+.logo b{color:var(--a)}
+.topbar-r{display:flex;align-items:center;gap:7px}
+.pill-live{display:flex;align-items:center;gap:4px;background:#dcfce7;border:1px solid #86efac;padding:3px 9px;border-radius:20px;font-size:9.5px;font-weight:700;color:#16a34a;letter-spacing:.4px}
+.ldot{width:5px;height:5px;border-radius:50%;background:#16a34a;animation:ldot 1s ease infinite}
+@keyframes ldot{0%,100%{opacity:1}50%{opacity:.2}}
+.ts{font-family:var(--mono);font-size:10px;color:var(--t3);font-weight:500}
+.ibtn{width:32px;height:32px;background:var(--bg3);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);transition:.12s;box-shadow:var(--shadow)}
+.ibtn:active{transform:scale(.91)}
+.ibtn.spin svg{animation:rot .6s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
 
-  body {
-    background: var(--bg-0);
-    color: var(--text-0);
-    font-family: var(--sans);
-    font-size: 14px;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:var(--bg0)}
+.content::-webkit-scrollbar{width:0}
+.page{display:none;padding:12px 13px 20px}
+.page.show{display:block}
 
-  /* Grid bg */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(88,166,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(88,166,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* ── TABBAR ── */
+.tabbar{flex-shrink:0;background:var(--bg1);border-top:1px solid var(--b1);display:grid;grid-template-columns:repeat(3,1fr);padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -1px 8px rgba(0,0,0,.06)}
+.ti{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;cursor:pointer;color:var(--t3);transition:.15s;position:relative}
+.ti svg{width:19px;height:19px;stroke-width:1.6;transition:.15s}
+.ti span{font-size:9px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+.ti.on{color:var(--a)}
+.ti.on svg{stroke-width:2.2}
+.ti::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);height:2.5px;width:0;background:var(--a);border-radius:0 0 2px 2px;transition:.22s width}
+.ti.on::after{width:28px}
 
-  /* ========== LAYOUT ========== */
-  .app { position: relative; z-index: 1; }
+/* ── HERO BALANCE ── */
+.hero{background:var(--bg1);border:1px solid var(--b1);border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--a),#7c3aed)}
+.hero-eyebrow{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.4px;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.hero-main{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.hero-num{font-family:var(--mono);font-size:32px;font-weight:700;letter-spacing:-1.5px;color:var(--t1);line-height:1}
+.hero-num sup{font-size:16px;color:var(--t2);font-weight:400;vertical-align:.5em}
+.upnl-badge{display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;font-family:var(--mono);font-size:11px;font-weight:700}
+.upnl-badge.up{background:var(--gd);color:var(--g);border:1px solid rgba(5,150,105,.2)}
+.upnl-badge.dn{background:var(--rd);color:var(--r);border:1px solid rgba(220,38,38,.2)}
+.hero-row{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--b1);padding-top:12px;gap:0}
+.hg{text-align:center;padding:0 4px}
+.hg:not(:last-child){border-right:1px solid var(--b1)}
+.hg-l{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.hg-v{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--t1)}
 
-  header {
-    background: rgba(13,17,23,0.95);
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(12px);
-    position: sticky; top: 0; z-index: 100;
-    padding: 0 24px;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 56px;
-  }
+/* ── STAT TILES ── */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.tile{background:var(--bg1);border:1px solid var(--b1);border-radius:12px;padding:12px;box-shadow:var(--shadow)}
+.tile-l{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.tile-v{font-family:var(--mono);font-size:16px;font-weight:700}
+.tile-s{font-size:9.5px;color:var(--t3);margin-top:3px}
 
-  .logo {
-    font-family: var(--mono);
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: -0.5px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .logo-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+/* ── SECTION HEADER ── */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.sh-t{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.6px}
+.sh-r{font-size:10px;color:var(--t3)}
 
-  .header-right { display: flex; align-items: center; gap: 12px; }
+/* ════════════════════════════════
+   POSITION CARD — Binance style
+   ════════════════════════════════ */
+.pos-list{display:flex;flex-direction:column;gap:8px}
+.pc{background:var(--bg1);border:1px solid var(--b1);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
 
-  .sync-status {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-2);
-    display: flex; align-items: center; gap: 6px;
-  }
-  .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-2); }
-  .sync-dot.syncing { background: var(--yellow); animation: pulse 1s infinite; }
-  .sync-dot.ok { background: var(--green); }
-  .sync-dot.error { background: var(--red); }
+/* Top bar: coin name + side + leverage */
+.pc-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px 10px;border-bottom:1px solid var(--b1)}
+.pc-header-l{display:flex;align-items:center;gap:8px}
+.pc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:800;flex-shrink:0}
+.pc-title{font-size:14px;font-weight:700;color:var(--t1)}
+.pc-title span{color:var(--t3);font-weight:400;font-size:11px}
+.pc-tags{display:flex;align-items:center;gap:5px;margin-top:2px}
+.pc-tag{font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:4px;letter-spacing:.3px}
+.pc-tag.perp{background:var(--bg3);color:var(--t2);border:1px solid var(--b1)}
+.pc-tag.cross{background:var(--bg3);color:var(--t2);border:1px solid var(--b1)}
+.pc-tag.lev{background:var(--ad);color:var(--a);border:1px solid rgba(37,99,235,.2);font-family:var(--mono)}
+.pc-side-badge{padding:3px 10px;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:.5px;flex-shrink:0}
+.pc-side-badge.L{background:var(--gd);color:var(--g);border:1px solid rgba(5,150,105,.25)}
+.pc-side-badge.S{background:var(--rd);color:var(--r);border:1px solid rgba(220,38,38,.25)}
 
-  /* ========== SIDEBAR ========== */
-  .layout { display: flex; min-height: calc(100vh - 56px); }
+/* PNL + ROI hero row */
+.pc-pnl-hero{display:grid;grid-template-columns:1fr 1fr;padding:12px 14px 10px;gap:0}
+.pc-pnl-hero-item{}
+.pc-pnl-hero-item:last-child{text-align:right}
+.pc-phl{font-size:9.5px;color:var(--t3);margin-bottom:4px;font-weight:500}
+.pc-phv{font-family:var(--mono);font-size:22px;font-weight:800;line-height:1;letter-spacing:-.5px}
 
-  .sidebar {
-    width: 220px;
-    background: var(--bg-1);
-    border-right: 1px solid var(--border);
-    padding: 16px 0;
-    flex-shrink: 0;
-    position: sticky;
-    top: 56px;
-    height: calc(100vh - 56px);
-    overflow-y: auto;
-  }
+/* 3-col metrics */
+.pc-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;padding:0 14px 12px;gap:10px 6px;border-top:1px solid var(--b1);padding-top:10px}
+.pc-m{}
+.pc-ml{font-size:9px;color:var(--t3);font-weight:500;margin-bottom:3px;white-space:nowrap}
+.pc-mv{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--t1)}
 
-  .nav-section { padding: 0 12px 8px; }
-  .nav-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-2);
-    padding: 0 8px 8px;
-  }
+/* ── OPEN ORDERS ── */
+.oo-card{background:var(--bg1);border:1px solid var(--b1);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.oo-item{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;border-bottom:1px solid var(--b1);transition:.1s}
+.oo-item:last-child{border-bottom:none}
+.oo-item:active{background:var(--bg3)}
+.oo-l{display:flex;align-items:center;gap:9px}
+.oo-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:800;flex-shrink:0}
+.oo-coin{font-size:12.5px;font-weight:700;color:var(--t1)}
+.oo-inf{font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:1px;display:flex;align-items:center;gap:4px}
+.oo-tag{padding:1px 5px;border-radius:4px;font-size:8.5px;font-weight:700}
+.oo-tag.lim{background:var(--ad);color:var(--a)}
+.oo-tag.tp{background:var(--gd);color:var(--g)}
+.oo-tag.sl{background:var(--rd);color:var(--r)}
+.oo-r{text-align:right}
+.oo-px{font-family:var(--mono);font-size:13px;font-weight:700}
+.oo-sz{font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:1px}
 
-  .nav-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: var(--text-1);
-    font-size: 13px;
-    font-weight: 400;
-    transition: all 0.15s;
-    margin-bottom: 2px;
-  }
-  .nav-item:hover { background: var(--bg-3); color: var(--text-0); }
-  .nav-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 500; }
-  .nav-item .icon { font-size: 15px; width: 20px; text-align: center; }
-  .nav-badge {
-    margin-left: auto;
-    font-family: var(--mono);
-    font-size: 10px;
-    background: var(--bg-3);
-    border: 1px solid var(--border);
-    color: var(--text-1);
-    padding: 1px 6px;
-    border-radius: 10px;
-  }
-  .nav-badge.green { background: var(--green-dim); border-color: var(--green); color: var(--green); }
-  .nav-divider { border: none; border-top: 1px solid var(--border); margin: 8px 12px; }
+/* ── EMPTY / LOADING ── */
+.empty{background:var(--bg1);border:1px solid var(--b1);border-radius:12px;padding:28px 16px;text-align:center;box-shadow:var(--shadow)}
+.ei{font-size:26px;margin-bottom:6px;opacity:.4}
+.et{font-size:12px;color:var(--t3)}
+.spinrow{display:flex;align-items:center;justify-content:center;gap:8px;padding:24px;color:var(--t3);font-size:12px}
+.sp{width:16px;height:16px;border:2.5px solid var(--b2);border-top-color:var(--a);border-radius:50%;animation:rot .7s linear infinite;flex-shrink:0}
 
-  /* ========== MAIN ========== */
-  .main { flex: 1; padding: 24px; overflow-y: auto; }
+/* ════════════════════════════
+   HISTORY
+   ════════════════════════════ */
+.date-filter{background:var(--bg1);border:1px solid var(--b1);border-radius:13px;padding:13px;margin-bottom:9px;box-shadow:var(--shadow)}
+.df-title{font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:9px}
+.df-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px}
+.df-field label{font-size:9px;color:var(--t3);font-weight:600;display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px}
+.df-input{width:100%;background:var(--bg3);border:1px solid var(--b2);color:var(--t1);padding:8px 10px;border-radius:8px;font-size:12px;font-family:var(--mono);outline:none;transition:.15s border-color}
+.df-input:focus{border-color:var(--a)}
+.df-input::-webkit-calendar-picker-indicator{opacity:.5;cursor:pointer}
+.df-shorts{display:flex;gap:5px;flex-wrap:wrap}
+.dfs{background:var(--bg3);border:1px solid var(--b1);color:var(--t3);padding:4px 11px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;transition:.12s;white-space:nowrap}
+.dfs.on{background:var(--ad);border-color:rgba(37,99,235,.3);color:var(--a)}
+.dfs:active{transform:scale(.94)}
 
-  .page { display: none; }
-  .page.active { display: block; }
+.pnl-sum{background:var(--bg1);border:1px solid var(--b1);border-radius:13px;padding:13px;margin-bottom:9px;box-shadow:var(--shadow)}
+.ps-top{display:flex;justify-content:space-between;margin-bottom:12px}
+.ps-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.ps-big{font-family:var(--mono);font-size:22px;font-weight:800}
+.ps-wr{font-family:var(--mono);font-size:18px;font-weight:800}
+.ps-3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.p3{background:var(--bg3);border-radius:8px;padding:9px;text-align:center}
+.p3-l{font-size:8.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.p3-v{font-family:var(--mono);font-size:12.5px;font-weight:700}
 
-  /* ========== CARDS ========== */
-  .card {
-    background: var(--bg-1);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  .card-header {
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .card-title {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    color: var(--text-1);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .card-title .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-  .card-body { padding: 18px; }
+.bcw{background:var(--bg1);border:1px solid var(--b1);border-radius:12px;padding:12px;margin-bottom:9px;box-shadow:var(--shadow)}
+.bc-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.bc-tl{font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.5px}
+.bc-tot{font-family:var(--mono);font-size:13px;font-weight:700}
+.bc-bars{display:flex;align-items:flex-end;gap:3px;height:60px}
+.bc-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%}
+.bc-inner{flex:1;width:100%;display:flex;align-items:flex-end}
+.bc-bar{width:100%;min-height:2px;border-radius:3px 3px 0 0}
+.bc-bar.g{background:var(--g)}
+.bc-bar.r{background:var(--r)}
+.bc-bar.z{background:var(--b1)}
+.bc-lbl{font-size:8px;color:var(--t3);font-family:var(--mono)}
+.bc-num{font-size:7px;color:var(--t3);font-family:var(--mono);white-space:nowrap;max-width:100%;overflow:hidden;text-align:center}
 
-  /* ========== STATS GRID ========== */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin-bottom: 20px;
-  }
+/* CALENDAR */
+.cal{background:var(--bg1);border:1px solid var(--b1);border-radius:12px;padding:11px 11px 0;margin-bottom:9px;box-shadow:var(--shadow);overflow:hidden}
+.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.cal-m{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--t1)}
+.cal-btn{width:24px;height:24px;background:var(--bg3);border:1px solid var(--b1);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);font-size:14px;transition:.12s;user-select:none}
+.cal-btn:active{transform:scale(.88)}
+.cal-dows{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;margin-bottom:3px}
+.cal-dow{font-size:8px;font-weight:600;color:var(--t3);padding:2px 0;text-transform:uppercase}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+/* Day cells: plain, NO color change, PnL text inside */
+.cc{height:38px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:5px;cursor:pointer;transition:.12s;padding:2px 1px}
+.cc.empty{pointer-events:none;opacity:0}
+.cc-num{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--t3);line-height:1.1}
+.cc-pnl{font-size:6.5px;font-weight:700;font-family:var(--mono);color:transparent;line-height:1;margin-top:1px}
+.cc.has-data .cc-num{color:var(--t1);font-weight:700}
+.cc.has-data.profit .cc-pnl{color:var(--g)}
+.cc.has-data.loss .cc-pnl{color:var(--r)}
+.cc.today .cc-num{color:var(--a);font-weight:800}
+.cc.today{background:rgba(37,99,235,.06);outline:1.5px solid rgba(37,99,235,.3);outline-offset:-1px}
+.cc.sel{background:var(--ad)}
+.cc.sel .cc-num{color:var(--a)}
+.cc:not(.empty):hover{background:var(--bg3)}
+/* Monthly summary bar */
+.cal-monthly{display:flex;align-items:center;justify-content:space-between;padding:10px 11px;background:var(--bg3);border-top:1px solid var(--b1);margin-top:1px}
+.cm-l{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.cm-d{font-size:9px;color:var(--t3)}
+.cm-v{font-family:var(--mono);font-size:14px;font-weight:800}
+.dpop{margin:0 11px 11px;background:var(--bg3);border:1px solid var(--b2);border-radius:9px;padding:10px;display:none}
+.dpop.open{display:block;animation:fd .15s ease}
+@keyframes fd{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.dp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;padding-bottom:7px;border-bottom:1px solid var(--b1)}
+.dp-x{width:20px;height:20px;border-radius:5px;background:var(--bg4);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);font-size:12px}
+.dp-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--b1)}
+.dp-row:last-child{border:none}
 
-  .stat-card {
-    background: var(--bg-1);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
-  .stat-card:hover { border-color: var(--border-bright); }
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent);
-    opacity: 0.4;
-  }
-  .stat-card.green::before { background: var(--green); }
-  .stat-card.red::before { background: var(--red); }
-  .stat-card.yellow::before { background: var(--yellow); }
-  .stat-card.purple::before { background: var(--purple); }
+.tcard{background:var(--bg1);border:1px solid var(--b1);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.tcard-h{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;border-bottom:1px solid var(--b1)}
+.t-filters{display:flex;gap:5px;overflow-x:auto;padding:9px 12px;border-bottom:1px solid var(--b1);scrollbar-width:none}
+.t-filters::-webkit-scrollbar{display:none}
+.chip{background:var(--bg3);border:1px solid var(--b1);color:var(--t3);padding:4px 12px;border-radius:20px;font-size:10.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:.12s;flex-shrink:0}
+.chip.on{background:var(--ad);border-color:rgba(37,99,235,.3);color:var(--a)}
+.chip:active{transform:scale(.94)}
+.t-item{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;border-bottom:1px solid var(--b1);transition:.1s}
+.t-item:last-child{border-bottom:none}
+.t-item:active{background:var(--bg3)}
+.t-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:800;flex-shrink:0}
+.t-coin{font-size:13px;font-weight:600;color:var(--t1)}
+.t-sub{font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:1px}
+.t-pnl{font-family:var(--mono);font-size:13px;font-weight:700}
+.t-dt{font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:1px;text-align:right}
 
-  .stat-label { font-size: 11px; color: var(--text-2); letter-spacing: 0.5px; margin-bottom: 8px; }
-  .stat-value {
-    font-family: var(--mono);
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text-0);
-    letter-spacing: -0.5px;
-  }
-  .stat-sub { font-family: var(--mono); font-size: 11px; color: var(--text-2); margin-top: 4px; }
-  .stat-value.green { color: var(--green); }
-  .stat-value.red { color: var(--red); }
+/* ── SETTINGS ── */
+.sg{margin-bottom:10px}
+.sg-l{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px}
+.sc{background:var(--bg1);border:1px solid var(--b1);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.sr{display:flex;align-items:center;gap:10px;padding:11px 13px;border-bottom:1px solid var(--b1);transition:.1s}
+.sr:last-child{border-bottom:none}
+.sr:active{background:var(--bg3)}
+.s-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.s-body{flex:1;min-width:0}
+.s-lbl{font-size:13px;font-weight:500;color:var(--t1)}
+.s-sub{font-size:10px;color:var(--t3);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sinw{padding:0 13px 11px;border-bottom:1px solid var(--b1)}
+.sinw:last-child{border-bottom:none}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--b2);color:var(--t1);padding:9px 11px;border-radius:8px;font-size:12px;font-family:var(--sans);outline:none;transition:.15s border-color}
+.inp:focus{border-color:var(--a)}
+.inp::placeholder{color:var(--t3)}
+.btn{width:100%;background:var(--a);color:#fff;border:none;padding:10px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;margin-top:6px;font-family:var(--sans);transition:.12s;letter-spacing:.1px}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:var(--bg3);color:var(--t2);border:1px solid var(--b2)}
+.btn.red{background:#fef2f2;color:var(--r);border:1px solid rgba(220,38,38,.25)}
+.tog{width:40px;height:22px;background:var(--bg4);border:1.5px solid var(--b2);border-radius:11px;cursor:pointer;position:relative;transition:.2s;flex-shrink:0}
+.tog.on{background:var(--a);border-color:var(--a)}
+.tog::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:1.5px;left:1.5px;transition:.2s transform;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.tog.on::after{transform:translateX(18px)}
+.sel{background:var(--bg3);border:1px solid var(--b2);color:var(--t1);padding:5px 9px;border-radius:7px;font-size:11px;font-family:var(--sans);outline:none}
 
-  /* ========== TABLES ========== */
-  .table-wrap { overflow-x: auto; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: var(--mono);
-    font-size: 12px;
-  }
-  thead th {
-    padding: 10px 12px;
-    text-align: left;
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-2);
-    border-bottom: 1px solid var(--border);
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  tbody tr {
-    border-bottom: 1px solid rgba(42,52,65,0.5);
-    transition: background 0.1s;
-  }
-  tbody tr:hover { background: rgba(30,37,48,0.8); }
-  tbody tr:last-child { border-bottom: none; }
-  td {
-    padding: 10px 12px;
-    white-space: nowrap;
-    color: var(--text-0);
-  }
-  td.text-right, th.text-right { text-align: right; }
-  td.text-center, th.text-center { text-align: center; }
+/* ── TOAST ── */
+.toast{position:fixed;top:58px;left:50%;transform:translateX(-50%) translateY(-8px);background:var(--t1);color:var(--bg1);padding:8px 14px;border-radius:9px;font-size:11.5px;font-weight:600;z-index:999;opacity:0;pointer-events:none;transition:.22s all;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .badge.long { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
-  .badge.short { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
-  .badge.buy { background: var(--green-dim); color: var(--green); }
-  .badge.sell { background: var(--red-dim); color: var(--red); }
-
-  .pnl-pos { color: var(--green); }
-  .pnl-neg { color: var(--red); }
-  .pnl-zero { color: var(--text-1); }
-
-  /* ========== FORMS ========== */
-  .form-group { margin-bottom: 16px; }
-  .form-label {
-    display: block;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    color: var(--text-1);
-    margin-bottom: 6px;
-    font-family: var(--mono);
-  }
-  .form-input {
-    width: 100%;
-    background: var(--bg-0);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 14px;
-    color: var(--text-0);
-    font-family: var(--mono);
-    font-size: 13px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-input:focus { border-color: var(--accent); }
-  .form-input::placeholder { color: var(--text-2); }
-
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
-
-  /* ========== BUTTONS ========== */
-  .btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 9px 18px;
-    border-radius: 6px;
-    border: 1px solid;
-    cursor: pointer;
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-    transition: all 0.15s;
-    text-decoration: none;
-  }
-  .btn-primary { background: var(--accent); border-color: var(--accent); color: #000; }
-  .btn-primary:hover { background: #79b8ff; border-color: #79b8ff; }
-  .btn-secondary { background: transparent; border-color: var(--border-bright); color: var(--text-0); }
-  .btn-secondary:hover { background: var(--bg-3); border-color: var(--accent); color: var(--accent); }
-  .btn-success { background: var(--green); border-color: var(--green); color: #000; }
-  .btn-success:hover { filter: brightness(1.1); }
-  .btn-danger { background: transparent; border-color: var(--red); color: var(--red); }
-  .btn-danger:hover { background: var(--red-dim); }
-  .btn-sm { padding: 5px 12px; font-size: 11px; }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
-
-  /* ========== SETTINGS ========== */
-  .settings-section {
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  .settings-section h3 {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* ========== ALERTS / TOASTS ========== */
-  .toast-container {
-    position: fixed;
-    top: 70px; right: 20px;
-    z-index: 9999;
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .toast {
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-family: var(--mono);
-    font-size: 12px;
-    min-width: 280px;
-    max-width: 380px;
-    display: flex; align-items: flex-start; gap: 10px;
-    animation: slideIn 0.2s ease;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  }
-  @keyframes slideIn { from{transform:translateX(20px);opacity:0} to{transform:translateX(0);opacity:1} }
-  .toast.success { border-left: 3px solid var(--green); }
-  .toast.error { border-left: 3px solid var(--red); }
-  .toast.info { border-left: 3px solid var(--accent); }
-  .toast.warning { border-left: 3px solid var(--yellow); }
-  .toast-icon { font-size: 14px; flex-shrink: 0; }
-  .toast-body { flex: 1; }
-  .toast-title { font-weight: 600; color: var(--text-0); margin-bottom: 2px; }
-  .toast-msg { color: var(--text-1); font-size: 11px; line-height: 1.4; }
-  .toast-close { cursor: pointer; color: var(--text-2); font-size: 16px; line-height: 1; margin-top: -1px; }
-
-  /* ========== PROGRESS ========== */
-  .progress-bar {
-    height: 2px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-top: 8px;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width 0.3s;
-  }
-
-  /* ========== EMPTY STATE ========== */
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-2);
-  }
-  .empty-state .icon { font-size: 40px; margin-bottom: 16px; opacity: 0.4; }
-  .empty-state p { font-size: 13px; line-height: 1.6; }
-
-  /* ========== FILTERS ========== */
-  .filter-bar {
-    display: flex; align-items: center; gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  .filter-select {
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 7px 12px;
-    color: var(--text-0);
-    font-family: var(--mono);
-    font-size: 12px;
-    outline: none;
-    cursor: pointer;
-  }
-  .filter-select:focus { border-color: var(--accent); }
-  .filter-input {
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 7px 12px;
-    color: var(--text-0);
-    font-family: var(--mono);
-    font-size: 12px;
-    outline: none;
-    width: 180px;
-  }
-  .filter-input:focus { border-color: var(--accent); }
-  .filter-input::placeholder { color: var(--text-2); }
-
-  /* ========== LOADING ========== */
-  .loading {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-2);
-  }
-  .spinner {
-    width: 14px; height: 14px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ========== SCROLLBAR ========== */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg-0); }
-  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text-2); }
-
-  /* ========== PAGE HEADER ========== */
-  .page-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 24px;
-    flex-wrap: wrap; gap: 12px;
-  }
-  .page-title {
-    font-family: var(--mono);
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-0);
-    letter-spacing: -0.5px;
-  }
-  .page-subtitle { font-size: 12px; color: var(--text-2); margin-top: 2px; }
-
-  /* ========== INFO ROWS ========== */
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 8px;
-  }
-  .info-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(42,52,65,0.5);
-    font-size: 12px;
-  }
-  .info-row:last-child { border-bottom: none; }
-  .info-key { color: var(--text-2); font-family: var(--mono); }
-  .info-val { color: var(--text-0); font-family: var(--mono); font-weight: 500; }
-
-  /* ========== TABS ========== */
-  .tab-bar {
-    display: flex; gap: 0;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 20px;
-  }
-  .tab-btn {
-    padding: 10px 18px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-2);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: all 0.15s;
-    background: none;
-    border-top: none; border-left: none; border-right: none;
-  }
-  .tab-btn:hover { color: var(--text-0); }
-  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  /* ========== SYNCED INDICATOR ========== */
-  .synced-chip {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    background: var(--green-dim);
-    color: var(--green);
-    border: 1px solid rgba(63,185,80,0.3);
-    display: inline-flex; align-items: center; gap: 4px;
-  }
-
-  /* ========== RESPONSIVE ========== */
-  @media (max-width: 768px) {
-    .sidebar { display: none; }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-  }
-
-  /* ========== MODAL ========== */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 500;
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(4px);
-    opacity: 0; pointer-events: none; transition: opacity 0.2s;
-  }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal {
-    background: var(--bg-1);
-    border: 1px solid var(--border-bright);
-    border-radius: 12px;
-    width: 100%; max-width: 520px;
-    padding: 24px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    transform: translateY(10px); transition: transform 0.2s;
-  }
-  .modal-overlay.open .modal { transform: translateY(0); }
-  .modal-title {
-    font-family: var(--mono);
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: var(--accent);
-  }
-  .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.g{color:var(--g)}.r{color:var(--r)}.a{color:var(--a)}.dim{color:var(--t2)}
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- TOASTS -->
-<div class="toast-container" id="toastContainer"></div>
-
-<!-- HEADER -->
-<header>
-  <div class="logo">
-    <div class="logo-dot"></div>
-    HL·TRACKER
-  </div>
-  <div class="header-right">
-    <div class="sync-status">
-      <div class="sync-dot" id="syncDot"></div>
-      <span id="syncLabel">Chưa kết nối</span>
-    </div>
-    <button class="btn btn-secondary btn-sm" onclick="openPage('settings')">⚙ Cài đặt</button>
-    <button class="btn btn-primary btn-sm" id="btnFetchAll" onclick="fetchAllData()" disabled>⟳ Làm mới</button>
-  </div>
-</header>
-
-<!-- LAYOUT -->
-<div class="layout">
-
-  <!-- SIDEBAR -->
-  <nav class="sidebar">
-    <div class="nav-section">
-      <div class="nav-label">Tổng quan</div>
-      <div class="nav-item active" onclick="openPage('dashboard')" id="nav-dashboard">
-        <span class="icon">◉</span> Dashboard
-      </div>
-      <div class="nav-item" onclick="openPage('positions')" id="nav-positions">
-        <span class="icon">▤</span> Vị thế mở
-        <span class="nav-badge green" id="badge-positions">0</span>
-      </div>
-    </div>
-    <hr class="nav-divider">
-    <div class="nav-section">
-      <div class="nav-label">Lịch sử</div>
-      <div class="nav-item" onclick="openPage('fills')" id="nav-fills">
-        <span class="icon">↕</span> Giao dịch
-        <span class="nav-badge" id="badge-fills">0</span>
-      </div>
-      <div class="nav-item" onclick="openPage('orders')" id="nav-orders">
-        <span class="icon">≡</span> Lệnh đặt
-        <span class="nav-badge" id="badge-orders">0</span>
-      </div>
-      <div class="nav-item" onclick="openPage('pnl')" id="nav-pnl">
-        <span class="icon">◈</span> Phân tích PnL
-      </div>
-    </div>
-    <hr class="nav-divider">
-    <div class="nav-section">
-      <div class="nav-label">Tài khoản</div>
-      <div class="nav-item" onclick="openPage('balance')" id="nav-balance">
-        <span class="icon">◎</span> Số dư
-      </div>
-      <div class="nav-item" onclick="openPage('funding')" id="nav-funding">
-        <span class="icon">⟳</span> Funding
-      </div>
-      <div class="nav-item" onclick="openPage('sheets')" id="nav-sheets">
-        <span class="icon">⬡</span> Google Sheets
-      </div>
-    </div>
-    <hr class="nav-divider">
-    <div class="nav-section">
-      <div class="nav-item" onclick="openPage('settings')" id="nav-settings">
-        <span class="icon">⚙</span> Cài đặt
-      </div>
-    </div>
-  </nav>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- ===== DASHBOARD ===== -->
-    <div class="page active" id="page-dashboard">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Dashboard</div>
-          <div class="page-subtitle" id="walletDisplay">Chưa cấu hình ví</div>
-        </div>
-        <div class="btn-group">
-          <button class="btn btn-secondary btn-sm" onclick="exportJSON()">↓ Export JSON</button>
-          <button class="btn btn-secondary btn-sm" onclick="exportCSV()">↓ Export CSV</button>
-        </div>
-      </div>
-
-      <div id="setupWarning" class="settings-section" style="border-color:var(--yellow);background:var(--yellow-dim)">
-        <h3 style="color:var(--yellow)">⚠ Chưa cài đặt</h3>
-        <p style="color:var(--text-1);font-size:13px;line-height:1.6">
-          Vui lòng vào <strong style="color:var(--yellow)">Cài đặt</strong> để nhập địa chỉ ví Hyperliquid và cấu hình Google Sheets API (nếu muốn lưu lịch sử tự động).
-        </p>
-        <br>
-        <button class="btn btn-secondary" onclick="openPage('settings')">→ Đến Cài đặt</button>
-      </div>
-
-      <div id="dashboardContent" style="display:none">
-        <!-- Stats -->
-        <div class="stats-grid">
-          <div class="stat-card green">
-            <div class="stat-label">GIÁ TRỊ TÀI KHOẢN</div>
-            <div class="stat-value" id="stat-accountValue">—</div>
-            <div class="stat-sub" id="stat-accountSub">USDC / USDT</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">SỐ DƯ KHẢ DỤNG</div>
-            <div class="stat-value" id="stat-withdrawable">—</div>
-            <div class="stat-sub">Có thể rút</div>
-          </div>
-          <div class="stat-card yellow">
-            <div class="stat-label">MARGIN ĐANG DÙNG</div>
-            <div class="stat-value" id="stat-marginUsed">—</div>
-            <div class="stat-sub" id="stat-marginPct">USDC</div>
-          </div>
-          <div class="stat-card purple">
-            <div class="stat-label">TỔNG VỊ THẾ (Notional)</div>
-            <div class="stat-value" id="stat-totalNtl">—</div>
-            <div class="stat-sub" id="stat-posCount">0 vị thế mở</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-label">UNREALIZED PnL</div>
-            <div class="stat-value" id="stat-unrealizedPnl">—</div>
-            <div class="stat-sub" id="stat-unrealizedPct">—</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">TỔNG GIAO DỊCH</div>
-            <div class="stat-value" id="stat-totalFills">—</div>
-            <div class="stat-sub" id="stat-fillRange">lịch sử đã tải</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-label">TỔNG REALIZED PnL</div>
-            <div class="stat-value" id="stat-totalRealizedPnl">—</div>
-            <div class="stat-sub">Tất cả giao dịch đã đóng</div>
-          </div>
-          <div class="stat-card red">
-            <div class="stat-label">TỔNG PHÍ ĐÃ TRẢ</div>
-            <div class="stat-value" id="stat-totalFee">—</div>
-            <div class="stat-sub">Maker + Taker</div>
-          </div>
-        </div>
-
-        <!-- Quick positions -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title"><div class="dot"></div> VỊ THẾ ĐANG MỞ</div>
-            <button class="btn btn-secondary btn-sm" onclick="openPage('positions')">Xem tất cả →</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr>
-                <th>Coin</th><th>Side</th><th>Size</th>
-                <th class="text-right">Entry Price</th>
-                <th class="text-right">Mark Price</th>
-                <th class="text-right">Unrealized PnL</th>
-                <th class="text-right">Margin</th>
-                <th class="text-right">Leverage</th>
-              </tr></thead>
-              <tbody id="dashPositions">
-                <tr><td colspan="8" style="text-align:center;color:var(--text-2);padding:30px">Không có vị thế mở</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Recent fills -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title"><div class="dot" style="background:var(--green)"></div> GIAO DỊCH GẦN NHẤT</div>
-            <button class="btn btn-secondary btn-sm" onclick="openPage('fills')">Xem tất cả →</button>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr>
-                <th>Thời gian</th><th>Coin</th><th>Side</th>
-                <th class="text-right">Price</th><th class="text-right">Size</th>
-                <th class="text-right">Value</th><th class="text-right">PnL</th><th class="text-right">Fee</th>
-              </tr></thead>
-              <tbody id="dashFills">
-                <tr><td colspan="8" style="text-align:center;color:var(--text-2);padding:30px">Chưa tải dữ liệu</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== POSITIONS ===== -->
-    <div class="page" id="page-positions">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Vị thế đang mở</div>
-          <div class="page-subtitle">Tất cả vị thế perpetual hiện tại</div>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="fetchPositions()">⟳ Làm mới</button>
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Coin</th><th>Side</th>
-              <th class="text-right">Size</th>
-              <th class="text-right">Entry Price</th>
-              <th class="text-right">Mark Price</th>
-              <th class="text-right">Liq Price</th>
-              <th class="text-right">Unrealized PnL</th>
-              <th class="text-right">Return %</th>
-              <th class="text-right">Margin</th>
-              <th class="text-right">Leverage</th>
-            </tr></thead>
-            <tbody id="tablePositions">
-              <tr><td colspan="10" style="text-align:center;color:var(--text-2);padding:40px">Không có dữ liệu</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== FILLS ===== -->
-    <div class="page" id="page-fills">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Lịch sử giao dịch</div>
-          <div class="page-subtitle" id="fillsCount">Chưa tải</div>
-        </div>
-        <div class="btn-group">
-          <button class="btn btn-secondary btn-sm" onclick="fetchMoreFills()">↓ Tải thêm</button>
-          <button class="btn btn-secondary btn-sm" onclick="exportFillsCSV()">↓ CSV</button>
-        </div>
-      </div>
-
-      <div class="filter-bar">
-        <input class="filter-input" id="fillSearch" placeholder="Tìm coin..." oninput="renderFills()">
-        <select class="filter-select" id="fillSide" onchange="renderFills()">
-          <option value="">Tất cả</option>
-          <option value="B">Long (Buy)</option>
-          <option value="A">Short (Sell)</option>
-        </select>
-        <select class="filter-select" id="fillSort" onchange="renderFills()">
-          <option value="time_desc">Mới nhất trước</option>
-          <option value="time_asc">Cũ nhất trước</option>
-          <option value="pnl_desc">PnL cao nhất</option>
-          <option value="pnl_asc">PnL thấp nhất</option>
-          <option value="size_desc">Size lớn nhất</option>
-        </select>
-        <span id="fillsLoadedInfo" class="loading" style="display:none">
-          <div class="spinner"></div> Đang tải...
-        </span>
-      </div>
-
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Thời gian</th><th>Coin</th><th>Side</th><th>Loại</th>
-              <th class="text-right">Price</th><th class="text-right">Size</th>
-              <th class="text-right">Value (USD)</th>
-              <th class="text-right">Realized PnL</th>
-              <th class="text-right">Fee</th>
-              <th class="text-right">Crossed</th>
-            </tr></thead>
-            <tbody id="tableFills">
-              <tr><td colspan="10" style="text-align:center;color:var(--text-2);padding:40px">Chưa tải dữ liệu</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div id="fillsPagination" style="text-align:center;padding:12px;color:var(--text-2);font-family:var(--mono);font-size:11px"></div>
-    </div>
-
-    <!-- ===== ORDERS ===== -->
-    <div class="page" id="page-orders">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Lệnh đặt</div>
-          <div class="page-subtitle">Lệnh đang chờ và lịch sử lệnh</div>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="fetchOrders()">⟳ Làm mới</button>
-      </div>
-
-      <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('orders','open')">Đang mở</button>
-        <button class="tab-btn" onclick="switchTab('orders','history')">Lịch sử lệnh</button>
-      </div>
-
-      <div class="tab-content active" id="orders-tab-open">
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr>
-                <th>Coin</th><th>Side</th><th>Loại</th>
-                <th class="text-right">Limit Price</th>
-                <th class="text-right">Size</th>
-                <th class="text-right">Filled</th>
-                <th>Thời gian</th>
-              </tr></thead>
-              <tbody id="tableOpenOrders">
-                <tr><td colspan="7" style="text-align:center;color:var(--text-2);padding:40px">Không có lệnh mở</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="orders-tab-history">
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr>
-                <th>Coin</th><th>Side</th><th>Loại</th>
-                <th class="text-right">Limit Price</th>
-                <th class="text-right">Size</th>
-                <th>Trạng thái</th>
-                <th>Thời gian</th>
-              </tr></thead>
-              <tbody id="tableHistOrders">
-                <tr><td colspan="7" style="text-align:center;color:var(--text-2);padding:40px">Chưa tải dữ liệu</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== PnL ANALYSIS ===== -->
-    <div class="page" id="page-pnl">
-      <div class="page-header">
-        <div class="page-title">Phân tích PnL</div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card green">
-          <div class="stat-label">TỔNG REALIZED PnL</div>
-          <div class="stat-value" id="pnl-total">—</div>
-        </div>
-        <div class="stat-card green">
-          <div class="stat-label">WIN RATE</div>
-          <div class="stat-value" id="pnl-winrate">—</div>
-          <div class="stat-sub" id="pnl-wintrades">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">AVERAGE WIN</div>
-          <div class="stat-value pnl-pos" id="pnl-avgwin">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">AVERAGE LOSS</div>
-          <div class="stat-value pnl-neg" id="pnl-avgloss">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">PROFIT FACTOR</div>
-          <div class="stat-value" id="pnl-profitfactor">—</div>
-          <div class="stat-sub">Tổng lãi / Tổng lỗ</div>
-        </div>
-        <div class="stat-card red">
-          <div class="stat-label">TỔNG PHÍ ĐÃ TRẢ</div>
-          <div class="stat-value pnl-neg" id="pnl-totalfee">—</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><div class="dot" style="background:var(--purple)"></div> PnL THEO COIN</div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Coin</th>
-              <th class="text-right">Số GD</th>
-              <th class="text-right">Win</th>
-              <th class="text-right">Loss</th>
-              <th class="text-right">Win Rate</th>
-              <th class="text-right">Realized PnL</th>
-              <th class="text-right">Tổng phí</th>
-              <th class="text-right">Net PnL</th>
-            </tr></thead>
-            <tbody id="tablePnlByCoin">
-              <tr><td colspan="8" style="text-align:center;color:var(--text-2);padding:40px">Chưa có dữ liệu</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== BALANCE ===== -->
-    <div class="page" id="page-balance">
-      <div class="page-header">
-        <div class="page-title">Số dư tài khoản</div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card green">
-          <div class="stat-label">TỔNG GIÁ TRỊ</div>
-          <div class="stat-value" id="bal-accountValue">—</div>
-          <div class="stat-sub">USDC (perp) + USDT (spot)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">SỐ DƯ KHẢ DỤNG</div>
-          <div class="stat-value" id="bal-withdrawable">—</div>
-          <div class="stat-sub">Có thể rút ngay</div>
-        </div>
-        <div class="stat-card yellow">
-          <div class="stat-label">MARGIN ĐANG DÙNG</div>
-          <div class="stat-value" id="bal-marginUsed">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">UNREALIZED PnL</div>
-          <div class="stat-value" id="bal-unrealizedPnl">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">USDT SPOT (nạp)</div>
-          <div class="stat-value" id="bal-usdtSpot">—</div>
-          <div class="stat-sub">Số dư USDT trong spot</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">USDC SPOT</div>
-          <div class="stat-value" id="bal-usdcSpot">—</div>
-          <div class="stat-sub">Số dư USDC trong spot</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><div class="dot" style="background:var(--yellow)"></div> SPOT BALANCES</div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Token</th>
-              <th class="text-right">Total</th>
-              <th class="text-right">Hold</th>
-              <th class="text-right">Available</th>
-              <th class="text-right">Đơn vị</th>
-            </tr></thead>
-            <tbody id="tableSpotBalance">
-              <tr><td colspan="4" style="text-align:center;color:var(--text-2);padding:40px">Chưa tải</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><div class="dot"></div> CHI TIẾT PERP MARGIN</div>
-        </div>
-        <div class="card-body">
-          <div class="info-grid" id="perpMarginDetails"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== FUNDING ===== -->
-    <div class="page" id="page-funding">
-      <div class="page-header">
-        <div class="page-title">Funding History</div>
-        <button class="btn btn-primary btn-sm" onclick="fetchFunding()">⟳ Tải</button>
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Thời gian</th>
-              <th>Coin</th>
-              <th class="text-right">Funding Rate</th>
-              <th class="text-right">Số tiền nhận/trả</th>
-              <th>Loại</th>
-            </tr></thead>
-            <tbody id="tableFunding">
-              <tr><td colspan="5" style="text-align:center;color:var(--text-2);padding:40px">Chưa tải dữ liệu</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== GOOGLE SHEETS ===== -->
-    <div class="page" id="page-sheets">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Google Sheets Sync</div>
-          <div class="page-subtitle">Lưu toàn bộ lịch sử giao dịch vào Google Sheets</div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <h3>📋 Hướng dẫn cài đặt Google Sheets</h3>
-        <ol style="line-height:2;color:var(--text-1);font-size:13px;padding-left:20px">
-          <li>Mở <a href="https://sheets.google.com" target="_blank" style="color:var(--accent)">Google Sheets</a> → Tạo sheet mới</li>
-          <li>Vào <strong style="color:var(--text-0)">Extensions → Apps Script</strong></li>
-          <li>Xóa code cũ, dán code từ nút bên dưới</li>
-          <li>Nhấn <strong style="color:var(--text-0)">Deploy → New deployment → Web app</strong></li>
-          <li>Chọn <strong style="color:var(--text-0)">Execute as: Me</strong> và <strong style="color:var(--text-0)">Who has access: Anyone</strong></li>
-          <li>Copy URL → dán vào ô <strong style="color:var(--text-0)">Apps Script URL</strong> trong Cài đặt</li>
-        </ol>
-        <br>
-        <button class="btn btn-secondary" onclick="showAppsScript()">📄 Xem code Apps Script</button>
-      </div>
-
-      <div class="settings-section">
-        <h3>🔄 Đồng bộ dữ liệu</h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-          <div class="stat-card" style="background:var(--bg-0)">
-            <div class="stat-label">FILLS ĐÃ SYNC</div>
-            <div class="stat-value" id="sheets-fillsSynced">0</div>
-          </div>
-          <div class="stat-card" style="background:var(--bg-0)">
-            <div class="stat-label">LẦN SYNC CUỐI</div>
-            <div class="stat-value" style="font-size:14px" id="sheets-lastSync">Chưa sync</div>
-          </div>
-        </div>
-
-        <div class="btn-group">
-          <button class="btn btn-success" onclick="syncFillsToSheets()" id="btnSyncFills">
-            ⬆ Sync Fills lên Sheets
-          </button>
-          <button class="btn btn-secondary" onclick="syncPositionsToSheets()">
-            ⬆ Sync Positions
-          </button>
-          <button class="btn btn-secondary" onclick="syncBalanceToSheets()">
-            ⬆ Sync Balance
-          </button>
-          <button class="btn btn-secondary" onclick="syncAllToSheets()">
-            ⬆ Sync Tất cả
-          </button>
-        </div>
-        <div class="progress-bar" id="syncProgress" style="display:none">
-          <div class="progress-fill" id="syncProgressFill" style="width:0%"></div>
-        </div>
-        <div id="syncLog" style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--text-2);max-height:200px;overflow-y:auto;background:var(--bg-0);border-radius:6px;padding:10px;display:none"></div>
-      </div>
-
-      <div class="settings-section">
-        <h3>🗂 Cấu trúc Sheet</h3>
-        <div style="display:grid;gap:8px;font-size:12px;font-family:var(--mono);color:var(--text-1)">
-          <div>📄 <strong style="color:var(--accent)">Fills</strong> — Toàn bộ lịch sử giao dịch (time, coin, side, price, size, PnL, fee...)</div>
-          <div>📄 <strong style="color:var(--accent)">Positions</strong> — Snapshot vị thế hiện tại</div>
-          <div>📄 <strong style="color:var(--accent)">Balance</strong> — Snapshot số dư theo thời gian</div>
-          <div>📄 <strong style="color:var(--accent)">Summary</strong> — Tổng kết PnL theo ngày</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== SETTINGS ===== -->
-    <div class="page" id="page-settings">
-      <div class="page-header">
-        <div class="page-title">Cài đặt</div>
-      </div>
-
-      <div class="settings-section">
-        <h3>💼 Tài khoản Hyperliquid</h3>
-        <div class="form-group">
-          <label class="form-label">ĐỊA CHỈ VÍ (Wallet Address)</label>
-          <input class="form-input" id="cfg-wallet" placeholder="0x0000000000000000000000000000000000000000">
-        </div>
-        <div style="font-size:11px;color:var(--text-2);margin-bottom:12px;font-family:var(--mono)">
-          ⚠ Chỉ cần địa chỉ ví (public key). Không bao giờ nhập private key.
-        </div>
-        <button class="btn btn-primary" onclick="saveWallet()">💾 Lưu địa chỉ ví</button>
-      </div>
-
-      <div class="settings-section">
-        <h3>📊 Google Sheets Integration</h3>
-        <div class="form-group">
-          <label class="form-label">APPS SCRIPT WEB APP URL</label>
-          <input class="form-input" id="cfg-sheetsUrl" placeholder="https://script.google.com/macros/s/xxx/exec">
-        </div>
-        <div class="form-group">
-          <label class="form-label">SPREADSHEET ID (tùy chọn — để xác nhận)</label>
-          <input class="form-input" id="cfg-sheetId" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms">
-        </div>
-        <button class="btn btn-primary" onclick="saveSheets()">💾 Lưu cấu hình Sheets</button>
-        <button class="btn btn-secondary" style="margin-left:8px" onclick="testSheetsConnection()">🔌 Test kết nối</button>
-      </div>
-
-      <div class="settings-section">
-        <h3>⚙ Tùy chọn</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">TỰ ĐỘNG LÀM MỚI (giây, 0 = tắt)</label>
-            <input class="form-input" id="cfg-autoRefresh" type="number" min="0" value="0" placeholder="60">
-          </div>
-          <div class="form-group">
-            <label class="form-label">SỐ NGÀY LỊCH SỬ ĐỂ TẢI</label>
-            <input class="form-input" id="cfg-histDays" type="number" min="1" max="180" value="180" placeholder="180">
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="saveOptions()">💾 Lưu tùy chọn</button>
-      </div>
-
-      <div class="settings-section" style="border-color:var(--red)">
-        <h3 style="color:var(--red)">⚠ Xóa dữ liệu</h3>
-        <p style="color:var(--text-1);font-size:13px;margin-bottom:12px">Xóa tất cả dữ liệu đã cache trong trình duyệt.</p>
-        <button class="btn btn-danger" onclick="clearAllData()">🗑 Xóa tất cả dữ liệu local</button>
-      </div>
-    </div>
-
-  </main>
-</div>
-</div>
-
-<!-- MODAL: Apps Script Code -->
-<div class="modal-overlay" id="modalAppsScript">
-  <div class="modal" style="max-width:680px">
-    <div class="modal-title">📄 Google Apps Script Code</div>
-    <p style="color:var(--text-1);font-size:12px;margin-bottom:12px">Dán code này vào Google Apps Script Editor:</p>
-    <textarea id="appsScriptCode" readonly style="width:100%;height:320px;background:var(--bg-0);border:1px solid var(--border);border-radius:6px;color:var(--text-0);font-family:var(--mono);font-size:11px;padding:12px;resize:vertical;outline:none;line-height:1.6"></textarea>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('modalAppsScript')">Đóng</button>
-      <button class="btn btn-primary" onclick="copyAppsScript()">📋 Copy code</button>
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo"><b>HL</b> Tracker</div>
+  <div class="topbar-r">
+    <div class="pill-live"><span class="ldot"></span>LIVE</div>
+    <span class="ts" id="tsEl">--:--:--</span>
+    <div class="ibtn" id="rfBtn" onclick="doRefresh()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4.03 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4.03-3-9s1.34-9 3-9"/></svg>
     </div>
   </div>
 </div>
+
+<div class="content" id="content">
+
+  <!-- ═══ DASHBOARD ═══ -->
+  <div class="page show" id="pg-dash">
+
+    <!-- HERO
+         Total Balance = spotClearinghouseState USDC total (298.43)
+         = wallet USDC + unrealized PnL from perp positions
+    -->
+    <div class="hero">
+      <div class="hero-eyebrow">
+        <svg width="9" height="9" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#2563eb" opacity=".2"/><circle cx="5" cy="5" r="2.5" fill="#2563eb"/></svg>
+        Tổng số dư
+      </div>
+      <div class="hero-main">
+        <div class="hero-num"><sup>$</sup><span id="hTotal">--</span></div>
+        <div class="upnl-badge up" id="hUpnlBadge">-- UPNL</div>
+      </div>
+      <div class="hero-row">
+        <div class="hg"><div class="hg-l">Số dư USDC</div><div class="hg-v" style="color:var(--a)" id="hUsdc">--</div></div>
+        <div class="hg"><div class="hg-l">Unrealized</div><div class="hg-v" id="hUnreal">--</div></div>
+        <div class="hg"><div class="hg-l">Có thể rút</div><div class="hg-v g" id="hWith">--</div></div>
+      </div>
+    </div>
+
+    <div class="tiles">
+      <div class="tile">
+        <div class="tile-l">Vị thế mở</div>
+        <div class="tile-v" style="color:var(--p)" id="tPos">--</div>
+        <div class="tile-s">Lệnh đặt: <span id="tOo">--</span></div>
+      </div>
+      <div class="tile">
+        <div class="tile-l">PnL hôm nay</div>
+        <div class="tile-v" id="tTodayPnl">--</div>
+        <div class="tile-s" id="tTodayCnt">-- lệnh</div>
+      </div>
+    </div>
+
+    <div class="sh"><div class="sh-t">Vị thế đang mở</div><div class="sh-r" id="posTs"></div></div>
+    <div class="pos-list" id="posList"><div class="spinrow"><div class="sp"></div>Đang tải...</div></div>
+
+    <div class="sh" style="margin-top:10px"><div class="sh-t">Lệnh đang đặt</div><div class="sh-r" id="ooMeta"></div></div>
+    <div id="ooWrap"><div class="spinrow"><div class="sp"></div></div></div>
+
+  </div>
+
+  <!-- ═══ HISTORY ═══ -->
+  <div class="page" id="pg-hist">
+
+    <div class="date-filter">
+      <div class="df-title">📅 Lọc theo ngày</div>
+      <div class="df-row">
+        <div class="df-field"><label>Từ ngày</label><input type="date" class="df-input" id="dfFrom"></div>
+        <div class="df-field"><label>Đến ngày</label><input type="date" class="df-input" id="dfTo"></div>
+      </div>
+      <div class="df-shorts">
+        <div class="dfs on" data-r="today" onclick="setRange(this)">Hôm nay</div>
+        <div class="dfs" data-r="7d" onclick="setRange(this)">7 ngày</div>
+        <div class="dfs" data-r="30d" onclick="setRange(this)">30 ngày</div>
+        <div class="dfs" data-r="month" onclick="setRange(this)">Tháng này</div>
+        <div class="dfs" data-r="all" onclick="setRange(this)">Tất cả</div>
+      </div>
+    </div>
+
+    <div class="pnl-sum">
+      <div class="ps-top">
+        <div><div class="ps-lbl">PnL khoảng này</div><div class="ps-big" id="psPnl">--</div></div>
+        <div style="text-align:right"><div class="ps-lbl">Win rate</div><div class="ps-wr" id="psWr">--%</div></div>
+      </div>
+      <div class="ps-3">
+        <div class="p3"><div class="p3-l">Thắng</div><div class="p3-v g" id="psW">--</div></div>
+        <div class="p3"><div class="p3-l">Thua</div><div class="p3-v r" id="psL">--</div></div>
+        <div class="p3"><div class="p3-l">Tổng lệnh</div><div class="p3-v" id="psTot">--</div></div>
+      </div>
+    </div>
+
+    <div class="bcw">
+      <div class="bc-h"><div class="bc-tl" id="bcTl">PnL theo ngày</div><div class="bc-tot" id="bcTot">--</div></div>
+      <div class="bc-bars" id="bcBars"><div class="spinrow"><div class="sp"></div></div></div>
+    </div>
+
+    <!-- CALENDAR — plain days, PnL text inside, monthly total below -->
+    <div class="cal">
+      <div class="cal-nav">
+        <div class="cal-btn" onclick="calShift(-1)">&#8249;</div>
+        <div class="cal-m" id="calTitle"></div>
+        <div class="cal-btn" onclick="calShift(1)">&#8250;</div>
+      </div>
+      <div class="cal-dows"><div class="cal-dow">CN</div><div class="cal-dow">T2</div><div class="cal-dow">T3</div><div class="cal-dow">T4</div><div class="cal-dow">T5</div><div class="cal-dow">T6</div><div class="cal-dow">T7</div></div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-monthly">
+        <div>
+          <div class="cm-l" id="cmLabel">Tổng tháng</div>
+          <div class="cm-d" id="cmDetail">-- ngày GD</div>
+        </div>
+        <div class="cm-v" id="cmVal">--</div>
+      </div>
+      <div class="dpop" id="dayPop"></div>
+    </div>
+
+    <div class="tcard">
+      <div class="tcard-h"><div class="sh-t">Lịch sử lệnh</div><div class="dim" style="font-size:10px" id="tCount">--</div></div>
+      <div class="t-filters">
+        <div class="chip on" data-f="all" onclick="setF(this)">Tất cả</div>
+        <div class="chip" data-f="win" onclick="setF(this)">Thắng</div>
+        <div class="chip" data-f="loss" onclick="setF(this)">Thua</div>
+        <div class="chip" data-f="long" onclick="setF(this)">Long</div>
+        <div class="chip" data-f="short" onclick="setF(this)">Short</div>
+      </div>
+      <div id="tList"><div class="spinrow"><div class="sp"></div></div></div>
+    </div>
+
+  </div>
+
+  <!-- ═══ SETTINGS ═══ -->
+  <div class="page" id="pg-set">
+    <div style="height:2px"></div>
+    <div class="sg"><div class="sg-l">Ví Hyperliquid</div>
+      <div class="sc">
+        <div class="sr"><div class="s-ico" style="background:#eff6ff;color:var(--a)">🔗</div><div class="s-body"><div class="s-lbl">Địa chỉ ví</div><div class="s-sub" id="walPrev">Chưa cài đặt</div></div></div>
+        <div class="sinw"><input class="inp" id="walInp" placeholder="0x... địa chỉ ví EVM"><button class="btn" onclick="saveWal()">Lưu & tải dữ liệu</button></div>
+      </div>
+    </div>
+    <div class="sg"><div class="sg-l">Google tích hợp</div>
+      <div class="sc">
+        <div class="sr"><div class="s-ico" style="background:#f0fdf4;color:var(--g)">📜</div><div class="s-body"><div class="s-lbl">AppScript URL</div><div class="s-sub" id="scrPrev">Chưa cài đặt</div></div></div>
+        <div class="sinw"><input class="inp" id="scrInp" placeholder="https://script.google.com/..."><button class="btn" onclick="saveScr()">Lưu Script</button></div>
+        <div class="sr" style="border-top:1px solid var(--b1)"><div class="s-ico" style="background:#fffbeb;color:var(--y)">📊</div><div class="s-body"><div class="s-lbl">Google Sheets</div><div class="s-sub" id="shtPrev">Chưa cài đặt</div></div></div>
+        <div class="sinw"><input class="inp" id="shtInp" placeholder="https://docs.google.com/spreadsheets/..."><button class="btn" onclick="saveSht()">Lưu Sheets</button><button class="btn ghost" style="margin-top:5px" onclick="openSht()">Mở Trang tính ↗</button></div>
+      </div>
+    </div>
+    <div class="sg"><div class="sg-l">Tự động làm mới</div>
+      <div class="sc">
+        <div class="sr"><div class="s-ico" style="background:#f5f3ff;color:var(--p)">⚡</div><div class="s-body"><div class="s-lbl">Real-time</div><div class="s-sub" id="autoLbl">--</div></div><div class="tog on" id="autoTog" onclick="togAuto(this)"></div></div>
+        <div class="sr"><div class="s-ico" style="background:var(--bg3);color:var(--t2)">🔄</div><div class="s-body"><div class="s-lbl">Chu kỳ</div></div>
+          <select class="sel" id="intSel" onchange="chgInt()">
+            <option value="1000">1 giây</option>
+            <option value="5000">5 giây</option>
+            <option value="10000">10 giây</option>
+            <option value="30000">30 giây</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="sg"><div class="sg-l">Ứng dụng</div>
+      <div class="sc">
+        <div class="sr"><div class="s-ico" style="background:var(--bg3);color:var(--t2)">ℹ️</div><div class="s-body"><div class="s-lbl">Phiên bản</div><div class="s-sub">HL Tracker v5.0 — Light Theme</div></div></div>
+        <div class="sinw"><button class="btn red" onclick="clearAll()">🗑 Xóa toàn bộ dữ liệu</button></div>
+      </div>
+    </div>
+    <div style="height:6px"></div>
+  </div>
+
+</div><!-- content -->
+
+<div class="tabbar">
+  <div class="ti on" id="ti-dash" onclick="goTab('dash')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    <span>Dashboard</span>
+  </div>
+  <div class="ti" id="ti-hist" onclick="goTab('hist')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+    <span>Lịch sử</span>
+  </div>
+  <div class="ti" id="ti-set" onclick="goTab('set')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    <span>Cài đặt</span>
+  </div>
+</div>
+</div>
+<div class="toast" id="toastEl"></div>
 
 <script>
-// ============================================================
-// CONFIG & STATE
-// ============================================================
-const HL_API = 'https://api.hyperliquid.xyz';
-let cfg = {};
-let state = {
-  positions: [],
-  fills: [],
-  openOrders: [],
-  histOrders: [],
-  fundingHistory: [],
-  clearinghouse: null,
-  spotBalance: null,
-  loaded: false,
-  fillsOffset: 0,
-  autoRefreshTimer: null,
-  syncedCount: 0,
-  lastSync: null
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const S={
+  wallet:_ls('hl_w')||'',script:_ls('hl_s')||'',sheet:_ls('hl_sh')||'',
+  auto:_ls('hl_a')!=='false',int:+(_ls('hl_i')||1000),
+  filter:'all',dateFrom:null,dateTo:null,
+  calY:new Date().getFullYear(),calM:new Date().getMonth(),
+  fills:[],dpnl:{},openDay:null,timer:null,tickTimer:null,curTab:'dash'
 };
+function _ls(k,v){if(v===undefined)return localStorage.getItem(k);v===null?localStorage.removeItem(k):localStorage.setItem(k,v);}
 
-// ============================================================
-// INIT
-// ============================================================
-function init() {
-  loadConfig();
-  if (cfg.wallet) {
-    document.getElementById('setupWarning').style.display = 'none';
-    document.getElementById('dashboardContent').style.display = 'block';
-    document.getElementById('walletDisplay').textContent = `${cfg.wallet.slice(0,6)}...${cfg.wallet.slice(-4)} · Hyperliquid`;
-    document.getElementById('btnFetchAll').disabled = false;
-    setSyncStatus('idle', 'Sẵn sàng');
-    fetchAllData();
-  }
-  updateSheetsSyncInfo();
+// ══════════════════════════════════════════
+// CLOCK
+// ══════════════════════════════════════════
+function startClock(){
+  clearInterval(S.tickTimer);
+  S.tickTimer=setInterval(()=>{document.getElementById('tsEl').textContent=new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});},1000);
 }
 
-function loadConfig() {
-  try {
-    cfg = JSON.parse(localStorage.getItem('hl_cfg') || '{}');
-    if (cfg.wallet) document.getElementById('cfg-wallet').value = cfg.wallet;
-    if (cfg.sheetsUrl) document.getElementById('cfg-sheetsUrl').value = cfg.sheetsUrl;
-    if (cfg.sheetId) document.getElementById('cfg-sheetId').value = cfg.sheetId;
-    if (cfg.autoRefresh) document.getElementById('cfg-autoRefresh').value = cfg.autoRefresh;
-    if (cfg.histDays) document.getElementById('cfg-histDays').value = cfg.histDays;
-
-    // Load cached state
-    const cached = localStorage.getItem('hl_state');
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      state.fills = parsed.fills || [];
-      state.syncedCount = parsed.syncedCount || 0;
-      state.lastSync = parsed.lastSync || null;
-    }
-  } catch(e) {}
-}
-
-function saveConfig() {
-  localStorage.setItem('hl_cfg', JSON.stringify(cfg));
-}
-
-function saveCachedState() {
-  localStorage.setItem('hl_state', JSON.stringify({
-    fills: state.fills,
-    syncedCount: state.syncedCount,
-    lastSync: state.lastSync
-  }));
-}
-
-// ============================================================
-// NAVIGATION
-// ============================================================
-function openPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + id)?.classList.add('active');
-  document.getElementById('nav-' + id)?.classList.add('active');
-
-  if (id === 'pnl') computePnlAnalysis();
-}
-
-function switchTab(group, tab) {
-  document.querySelectorAll(`#orders-tab-open, #orders-tab-history`).forEach(t => t.classList.remove('active'));
-  document.querySelectorAll(`.tab-btn`).forEach(b => b.classList.remove('active'));
-  document.getElementById(`${group}-tab-${tab}`)?.classList.add('active');
-  event.target.classList.add('active');
-}
-
-// ============================================================
-// SETTINGS
-// ============================================================
-function saveWallet() {
-  const w = document.getElementById('cfg-wallet').value.trim();
-  if (!w.startsWith('0x') || w.length !== 42) {
-    toast('error', 'Địa chỉ không hợp lệ', 'Địa chỉ ví phải bắt đầu bằng 0x và có 42 ký tự');
-    return;
-  }
-  cfg.wallet = w;
-  saveConfig();
-  toast('success', 'Đã lưu', 'Địa chỉ ví đã được lưu');
-  document.getElementById('setupWarning').style.display = 'none';
-  document.getElementById('dashboardContent').style.display = 'block';
-  document.getElementById('walletDisplay').textContent = `${w.slice(0,6)}...${w.slice(-4)} · Hyperliquid`;
-  document.getElementById('btnFetchAll').disabled = false;
-  setSyncStatus('idle', 'Sẵn sàng');
-}
-
-function saveSheets() {
-  cfg.sheetsUrl = document.getElementById('cfg-sheetsUrl').value.trim();
-  cfg.sheetId = document.getElementById('cfg-sheetId').value.trim();
-  saveConfig();
-  toast('success', 'Đã lưu', 'Cấu hình Google Sheets đã được lưu');
-}
-
-function saveOptions() {
-  cfg.autoRefresh = parseInt(document.getElementById('cfg-autoRefresh').value) || 0;
-  cfg.histDays = parseInt(document.getElementById('cfg-histDays').value) || 180;
-  saveConfig();
-  setupAutoRefresh();
-  toast('success', 'Đã lưu tùy chọn');
-}
-
-function setupAutoRefresh() {
-  if (state.autoRefreshTimer) clearInterval(state.autoRefreshTimer);
-  if (cfg.autoRefresh > 0) {
-    state.autoRefreshTimer = setInterval(() => fetchAllData(), cfg.autoRefresh * 1000);
-    toast('info', 'Auto-refresh', `Tự động làm mới mỗi ${cfg.autoRefresh}s`);
-  }
-}
-
-function clearAllData() {
-  if (!confirm('Xóa tất cả dữ liệu local? Không ảnh hưởng đến Google Sheets.')) return;
-  localStorage.removeItem('hl_state');
-  state.fills = [];
-  state.positions = [];
-  state.syncedCount = 0;
-  toast('success', 'Đã xóa', 'Dữ liệu local đã được xóa');
-  renderFills();
-  updateBadges();
-}
-
-// ============================================================
-// API CALLS
-// ============================================================
-async function hlPost(payload) {
-  const res = await fetch(`${HL_API}/info`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
-}
-
-async function fetchAllData() {
-  if (!cfg.wallet) { toast('error', 'Chưa có ví', 'Vui lòng cài đặt địa chỉ ví'); return; }
-  setSyncStatus('syncing', 'Đang tải...');
-  try {
-    await Promise.all([fetchPositions(), fetchClearinghouse(), fetchSpotBalance()]);
-    await fetchFillsFull();
-    await fetchOrders();
-    state.loaded = true;
-    setSyncStatus('ok', `Cập nhật ${fmtTime(Date.now())}`);
-    toast('success', 'Đã cập nhật', `Tải xong dữ liệu`);
-    updateBadges();
-  } catch(e) {
-    setSyncStatus('error', 'Lỗi kết nối');
-    toast('error', 'Lỗi', e.message);
-  }
-}
-
-async function fetchClearinghouse() {
-  const data = await hlPost({ type: 'clearinghouseState', user: cfg.wallet });
-  state.clearinghouse = data;
-  renderBalance(data);
-  renderDashboardStats(data);
-}
-
-async function fetchSpotBalance() {
-  try {
-    const data = await hlPost({ type: 'spotClearinghouseState', user: cfg.wallet });
-    state.spotBalance = data;
-    renderSpotBalance(data);
-  } catch(e) {}
-}
-
-async function fetchPositions() {
-  const data = await hlPost({ type: 'clearinghouseState', user: cfg.wallet });
-  state.positions = (data.assetPositions || []).filter(p => parseFloat(p.position?.szi) !== 0);
-  renderPositions();
-  renderDashPositions();
-  document.getElementById('badge-positions').textContent = state.positions.length;
-  if (state.positions.length > 0) document.getElementById('badge-positions').className = 'nav-badge green';
-}
-
-// Fetch all fills with pagination (max 180 days)
-async function fetchFillsFull() {
-  const days = cfg.histDays || 180;
-  const endTime = Date.now();
-  const startTime = endTime - days * 24 * 60 * 60 * 1000;
-
-  let allFills = [];
-  let cursor = startTime;
-  let iterations = 0;
-  const maxIter = 50;
-
-  document.getElementById('fillsLoadedInfo').style.display = 'inline-flex';
-
-  while (iterations < maxIter) {
-    const data = await hlPost({
-      type: 'userFillsByTime',
-      user: cfg.wallet,
-      startTime: cursor,
-      endTime: endTime
-    });
-    if (!data || data.length === 0) break;
-    allFills = allFills.concat(data);
-    if (data.length < 500) break;
-    cursor = data[data.length - 1].time + 1;
-    iterations++;
-    document.getElementById('fillsCount').textContent = `Đã tải ${allFills.length} giao dịch...`;
-  }
-
-  // Deduplicate by tid
-  const seen = new Set(state.fills.map(f => f.tid));
-  const newFills = allFills.filter(f => !seen.has(f.tid));
-  state.fills = [...state.fills, ...newFills].sort((a,b) => b.time - a.time);
-  saveCachedState();
-
-  document.getElementById('fillsLoadedInfo').style.display = 'none';
-  document.getElementById('fillsCount').textContent = `${state.fills.length} giao dịch (${days} ngày gần nhất)`;
-  document.getElementById('badge-fills').textContent = state.fills.length;
-  document.getElementById('stat-totalFills').textContent = state.fills.length;
-
-  renderFills();
-  renderDashFills();
-}
-
-async function fetchMoreFills() {
-  if (!cfg.wallet) return;
-  toast('info', 'Đang tải thêm...', 'Tải lịch sử cũ hơn');
-  const oldest = state.fills.length > 0 ? state.fills[state.fills.length - 1].time : Date.now();
-  const startTime = oldest - 30 * 24 * 60 * 60 * 1000;
-  try {
-    const data = await hlPost({ type: 'userFillsByTime', user: cfg.wallet, startTime, endTime: oldest - 1 });
-    if (!data || data.length === 0) { toast('info', 'Không có thêm dữ liệu', 'Đã tải hết'); return; }
-    const seen = new Set(state.fills.map(f => f.tid));
-    const newFills = data.filter(f => !seen.has(f.tid));
-    state.fills = [...state.fills, ...newFills].sort((a,b) => b.time - a.time);
-    saveCachedState();
-    renderFills();
-    toast('success', `+${newFills.length} giao dịch`, 'Đã tải thêm lịch sử');
-  } catch(e) { toast('error', 'Lỗi', e.message); }
-}
-
-async function fetchOrders() {
-  const [open, hist] = await Promise.all([
-    hlPost({ type: 'openOrders', user: cfg.wallet }),
-    hlPost({ type: 'historicalOrders', user: cfg.wallet })
-  ]);
-  state.openOrders = open || [];
-  state.histOrders = (hist || []).slice(0, 500);
-  renderOpenOrders();
-  renderHistOrders();
-  document.getElementById('badge-orders').textContent = state.openOrders.length;
-}
-
-async function fetchFunding() {
-  if (!cfg.wallet) return;
-  try {
-    const data = await hlPost({ type: 'userFundingHistory', user: cfg.wallet, startTime: Date.now() - 30*86400000 });
-    state.fundingHistory = data || [];
-    renderFunding();
-    toast('success', 'Đã tải funding history');
-  } catch(e) { toast('error', 'Lỗi', e.message); }
-}
-
-// ============================================================
-// RENDER
-// ============================================================
-function renderDashboardStats(data) {
-  const ms = data.marginSummary || {};
-  const pos = (data.assetPositions || []).filter(p => parseFloat(p.position?.szi) !== 0);
-
-  const accountVal = parseFloat(ms.accountValue || 0);
-  const withdrawable = parseFloat(data.withdrawable || 0);
-  const marginUsed = parseFloat(ms.totalMarginUsed || 0);
-  const ntl = parseFloat(ms.totalNtlPos || 0);
-
-  const unrealizedPnl = pos.reduce((s, p) => s + parseFloat(p.position?.unrealizedPnl || 0), 0);
-  const totalFee = state.fills.reduce((s, f) => s + parseFloat(f.fee || 0), 0);
-  const totalRealizedPnl = state.fills.reduce((s, f) => s + parseFloat(f.closedPnl || 0), 0);
-
-  const marginPct = accountVal > 0 ? ((marginUsed / accountVal) * 100).toFixed(1) : '0';
-
-  setVal('stat-accountValue', fmtUSD(accountVal));
-  setVal('stat-withdrawable', fmtUSD(withdrawable));
-  setVal('stat-marginUsed', fmtUSD(marginUsed));
-  setVal('stat-marginPct', `${marginPct}% tài sản`);
-  setVal('stat-totalNtl', fmtUSD(ntl));
-  setVal('stat-posCount', `${pos.length} vị thế mở`);
-
-  // Show USDT spot in sub-label if available
-  if (state.spotBalance) {
-    const balances = state.spotBalance.balances || [];
-    const usdt = balances.find(b => b.coin === 'USDT');
-    const usdc = balances.find(b => b.coin === 'USDC');
-    const usdtAmt = usdt ? parseFloat(usdt.total) : 0;
-    const usdcAmt = usdc ? parseFloat(usdc.total) : 0;
-    let subParts = [];
-    if (usdtAmt > 0) subParts.push(`USDT spot: ${fmtUSD(usdtAmt)}`);
-    if (usdcAmt > 0) subParts.push(`USDC spot: ${fmtUSD(usdcAmt)}`);
-    if (subParts.length > 0) setVal('stat-accountSub', subParts.join(' · '));
-    else setVal('stat-accountSub', 'USDC / USDT');
-  }
-
-  const upEl = document.getElementById('stat-unrealizedPnl');
-  upEl.textContent = fmtPnl(unrealizedPnl);
-  upEl.className = 'stat-value ' + (unrealizedPnl > 0 ? 'green' : unrealizedPnl < 0 ? 'red' : '');
-
-  const rpEl = document.getElementById('stat-totalRealizedPnl');
-  rpEl.textContent = fmtPnl(totalRealizedPnl);
-  rpEl.className = 'stat-value ' + (totalRealizedPnl > 0 ? 'green' : totalRealizedPnl < 0 ? 'red' : '');
-
-  setVal('stat-totalFee', '-' + fmtUSD(totalFee));
-}
-
-function renderDashPositions() {
-  const tbody = document.getElementById('dashPositions');
-  if (state.positions.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--text-2);padding:30px">Không có vị thế mở</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = state.positions.slice(0, 5).map(p => positionRow(p)).join('');
-}
-
-function renderPositions() {
-  const tbody = document.getElementById('tablePositions');
-  if (state.positions.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;color:var(--text-2);padding:40px">Không có vị thế mở</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = state.positions.map(p => positionRow(p, true)).join('');
-}
-
-function positionRow(ap, full = false) {
-  const p = ap.position;
-  const isLong = parseFloat(p.szi) > 0;
-  const pnl = parseFloat(p.unrealizedPnl || 0);
-  const margin = parseFloat(p.marginUsed || 0);
-  const entryPx = parseFloat(p.entryPx || 0);
-  const szi = Math.abs(parseFloat(p.szi));
-  const liq = p.liquidationPx ? parseFloat(p.liquidationPx) : null;
-  const leverage = p.leverage?.value || p.leverage || '?';
-  const pnlPct = margin > 0 ? (pnl / margin * 100).toFixed(2) : '0';
-
-  const pnlCls = pnl > 0 ? 'pnl-pos' : pnl < 0 ? 'pnl-neg' : 'pnl-zero';
-
-  if (full) {
-    return `<tr>
-      <td><strong>${p.coin}</strong></td>
-      <td><span class="badge ${isLong?'long':'short'}">${isLong?'LONG':'SHORT'}</span></td>
-      <td class="text-right">${fmtNum(szi)}</td>
-      <td class="text-right">${fmtUSD(entryPx)}</td>
-      <td class="text-right">${fmtUSD(entryPx)}</td>
-      <td class="text-right" style="color:var(--text-2)">${liq ? fmtUSD(liq) : '—'}</td>
-      <td class="text-right ${pnlCls}">${fmtPnl(pnl)}</td>
-      <td class="text-right ${pnlCls}">${pnlPct}%</td>
-      <td class="text-right">${fmtUSD(margin)}</td>
-      <td class="text-right">${leverage}x</td>
-    </tr>`;
-  }
-  return `<tr>
-    <td><strong>${p.coin}</strong></td>
-    <td><span class="badge ${isLong?'long':'short'}">${isLong?'LONG':'SHORT'}</span></td>
-    <td class="text-right">${fmtNum(szi)}</td>
-    <td class="text-right">${fmtUSD(entryPx)}</td>
-    <td class="text-right">${fmtUSD(entryPx)}</td>
-    <td class="text-right ${pnlCls}">${fmtPnl(pnl)}</td>
-    <td class="text-right">${fmtUSD(margin)}</td>
-    <td class="text-right">${leverage}x</td>
-  </tr>`;
-}
-
-function renderDashFills() {
-  const tbody = document.getElementById('dashFills');
-  const recent = state.fills.slice(0, 10);
-  if (recent.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--text-2);padding:30px">Chưa có dữ liệu</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = recent.map(f => fillRow(f)).join('');
-}
-
-function renderFills() {
-  const search = (document.getElementById('fillSearch')?.value || '').toUpperCase();
-  const side = document.getElementById('fillSide')?.value || '';
-  const sort = document.getElementById('fillSort')?.value || 'time_desc';
-
-  let fills = [...state.fills];
-  if (search) fills = fills.filter(f => (f.coin || '').toUpperCase().includes(search));
-  if (side) fills = fills.filter(f => f.side === side);
-
-  switch(sort) {
-    case 'time_asc': fills.sort((a,b) => a.time - b.time); break;
-    case 'pnl_desc': fills.sort((a,b) => parseFloat(b.closedPnl||0) - parseFloat(a.closedPnl||0)); break;
-    case 'pnl_asc': fills.sort((a,b) => parseFloat(a.closedPnl||0) - parseFloat(b.closedPnl||0)); break;
-    case 'size_desc': fills.sort((a,b) => parseFloat(b.sz||0) - parseFloat(a.sz||0)); break;
-    default: fills.sort((a,b) => b.time - a.time);
-  }
-
-  const tbody = document.getElementById('tableFills');
-  if (fills.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;color:var(--text-2);padding:40px">Không có dữ liệu</td></tr>`;
-    return;
-  }
-
-  const page = fills.slice(0, 200);
-  tbody.innerHTML = page.map(f => fillRow(f, true)).join('');
-
-  document.getElementById('fillsPagination').textContent =
-    fills.length > 200 ? `Hiển thị 200 / ${fills.length} giao dịch` : `${fills.length} giao dịch`;
-}
-
-function fillRow(f, full = false) {
-  const isLong = f.side === 'B';
-  const pnl = parseFloat(f.closedPnl || 0);
-  const pnlCls = pnl > 0 ? 'pnl-pos' : pnl < 0 ? 'pnl-neg' : 'pnl-zero';
-  const fee = parseFloat(f.fee || 0);
-  const value = parseFloat(f.px) * parseFloat(f.sz);
-
-  if (full) {
-    return `<tr>
-      <td style="color:var(--text-2)">${fmtDateTime(f.time)}</td>
-      <td><strong>${f.coin}</strong></td>
-      <td><span class="badge ${isLong?'buy':'sell'}">${isLong?'BUY':'SELL'}</span></td>
-      <td style="color:var(--text-2);font-size:11px">${f.dir || '—'}</td>
-      <td class="text-right">${fmtUSD(parseFloat(f.px))}</td>
-      <td class="text-right">${fmtNum(parseFloat(f.sz))}</td>
-      <td class="text-right">${fmtUSD(value)}</td>
-      <td class="text-right ${pnlCls}">${pnl !== 0 ? fmtPnl(pnl) : '—'}</td>
-      <td class="text-right" style="color:var(--red)">${fee > 0 ? '-'+fmtUSD(fee) : '—'}</td>
-      <td class="text-right" style="color:var(--text-2);font-size:11px">${f.crossed ? 'Taker' : 'Maker'}</td>
-    </tr>`;
-  }
-  return `<tr>
-    <td style="color:var(--text-2)">${fmtDateTime(f.time)}</td>
-    <td><strong>${f.coin}</strong></td>
-    <td><span class="badge ${isLong?'buy':'sell'}">${isLong?'BUY':'SELL'}</span></td>
-    <td class="text-right">${fmtUSD(parseFloat(f.px))}</td>
-    <td class="text-right">${fmtNum(parseFloat(f.sz))}</td>
-    <td class="text-right">${fmtUSD(value)}</td>
-    <td class="text-right ${pnlCls}">${pnl !== 0 ? fmtPnl(pnl) : '—'}</td>
-    <td class="text-right" style="color:var(--red)">${fee > 0 ? '-'+fmtUSD(fee) : '—'}</td>
-  </tr>`;
-}
-
-function renderOpenOrders() {
-  const tbody = document.getElementById('tableOpenOrders');
-  if (state.openOrders.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--text-2);padding:40px">Không có lệnh đang mở</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = state.openOrders.map(o => `<tr>
-    <td><strong>${o.coin}</strong></td>
-    <td><span class="badge ${o.side==='B'?'buy':'sell'}">${o.side==='B'?'BUY':'SELL'}</span></td>
-    <td style="color:var(--text-2)">${o.orderType || 'Limit'}</td>
-    <td class="text-right">${fmtUSD(parseFloat(o.limitPx))}</td>
-    <td class="text-right">${fmtNum(parseFloat(o.sz))}</td>
-    <td class="text-right">${fmtNum(parseFloat(o.origSz || o.sz))}</td>
-    <td style="color:var(--text-2)">${fmtDateTime(o.timestamp)}</td>
-  </tr>`).join('');
-}
-
-function renderHistOrders() {
-  const tbody = document.getElementById('tableHistOrders');
-  if (state.histOrders.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--text-2);padding:40px">Không có dữ liệu</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = state.histOrders.map(item => {
-    const o = item.order || item;
-    const statusColors = { filled:'green', open:'accent', canceled:'text-2', rejected:'red', marginCanceled:'red' };
-    const sc = statusColors[item.status] || 'text-2';
-    return `<tr>
-      <td><strong>${o.coin}</strong></td>
-      <td><span class="badge ${o.side==='B'?'buy':'sell'}">${o.side==='B'?'BUY':'SELL'}</span></td>
-      <td style="color:var(--text-2)">${o.orderType || 'Limit'}</td>
-      <td class="text-right">${fmtUSD(parseFloat(o.limitPx))}</td>
-      <td class="text-right">${fmtNum(parseFloat(o.origSz || o.sz))}</td>
-      <td><span style="color:var(--${sc})">${item.status}</span></td>
-      <td style="color:var(--text-2)">${fmtDateTime(o.timestamp)}</td>
-    </tr>`;
-  }).join('');
-}
-
-function renderBalance(data) {
-  const ms = data.marginSummary || {};
-  const cm = data.crossMarginSummary || ms;
-
-  setVal('bal-accountValue', fmtUSD(parseFloat(ms.accountValue || 0)));
-  setVal('bal-withdrawable', fmtUSD(parseFloat(data.withdrawable || 0)));
-  setVal('bal-marginUsed', fmtUSD(parseFloat(ms.totalMarginUsed || 0)));
-
-  const unrealized = (data.assetPositions || []).reduce((s, ap) => s + parseFloat(ap.position?.unrealizedPnl || 0), 0);
-  const upEl = document.getElementById('bal-unrealizedPnl');
-  upEl.textContent = fmtPnl(unrealized);
-  upEl.className = 'stat-value ' + (unrealized > 0 ? 'green' : unrealized < 0 ? 'red' : '');
-
-  const details = document.getElementById('perpMarginDetails');
-  details.innerHTML = [
-    ['Total NTL Position', fmtUSD(parseFloat(ms.totalNtlPos || 0))],
-    ['Total Raw USD', fmtUSD(parseFloat(ms.totalRawUsd || 0))],
-    ['Cross Margin Used', fmtUSD(parseFloat(cm.totalMarginUsed || 0))],
-    ['Cross Maintenance Margin', fmtUSD(parseFloat(data.crossMaintenanceMarginUsed || 0))],
-    ['Withdrawable', fmtUSD(parseFloat(data.withdrawable || 0))],
-  ].map(([k,v]) => `<div class="info-row"><span class="info-key">${k}</span><span class="info-val">${v}</span></div>`).join('');
-}
-
-function renderSpotBalance(data) {
-  const tbody = document.getElementById('tableSpotBalance');
-  const balances = (data.balances || []).filter(b => parseFloat(b.total) > 0);
-
-  // Update USDT & USDC stat cards
-  const usdt = balances.find(b => b.coin === 'USDT');
-  const usdc = balances.find(b => b.coin === 'USDC');
-  const usdtVal = usdt ? parseFloat(usdt.total) : 0;
-  const usdcVal = usdc ? parseFloat(usdc.total) : 0;
-
-  const usdtEl = document.getElementById('bal-usdtSpot');
-  if (usdtEl) {
-    usdtEl.textContent = usdtVal > 0 ? fmtUSD(usdtVal) : '—';
-    usdtEl.className = 'stat-value' + (usdtVal > 0 ? ' green' : '');
-  }
-  const usdcEl = document.getElementById('bal-usdcSpot');
-  if (usdcEl) {
-    usdcEl.textContent = usdcVal > 0 ? fmtUSD(usdcVal) : '—';
-    usdcEl.className = 'stat-value' + (usdcVal > 0 ? ' green' : '');
-  }
-
-  if (balances.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-2);padding:40px">Không có spot balance</td></tr>`;
-    return;
-  }
-
-  // Sort: USDT first, USDC second, others after
-  const sorted = [...balances].sort((a, b) => {
-    const priority = { 'USDT': 0, 'USDC': 1 };
-    const pa = priority[a.coin] ?? 99;
-    const pb = priority[b.coin] ?? 99;
-    if (pa !== pb) return pa - pb;
-    return parseFloat(b.total) - parseFloat(a.total);
-  });
-
-  tbody.innerHTML = sorted.map(b => {
-    const total = parseFloat(b.total);
-    const hold = parseFloat(b.hold || 0);
-    const avail = total - hold;
-    const isStable = b.coin === 'USDT' || b.coin === 'USDC';
-    const highlight = b.coin === 'USDT' ? 'color:var(--yellow)' : b.coin === 'USDC' ? 'color:var(--accent)' : '';
-    return `<tr>
-      <td><strong style="${highlight}">${b.coin}</strong>${b.coin === 'USDT' ? ' <span style="font-size:10px;color:var(--yellow);font-family:var(--mono);background:var(--yellow-dim);padding:1px 6px;border-radius:4px;margin-left:4px">nạp tiền</span>' : ''}</td>
-      <td class="text-right">${isStable ? fmtUSD(total) : fmtNum(total)}</td>
-      <td class="text-right" style="color:var(--text-2)">${isStable ? fmtUSD(hold) : fmtNum(hold)}</td>
-      <td class="text-right" style="color:var(--green)">${isStable ? fmtUSD(avail) : fmtNum(avail)}</td>
-      <td class="text-right" style="color:var(--text-2);font-size:11px">${b.coin}</td>
-    </tr>`;
-  }).join('');
-}
-
-function renderFunding() {
-  const tbody = document.getElementById('tableFunding');
-  if (state.fundingHistory.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-2);padding:40px">Không có dữ liệu</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = state.fundingHistory.slice(0, 200).map(f => {
-    const delta = f.delta || {};
-    const amount = parseFloat(delta.usdc || 0);
-    const amtCls = amount > 0 ? 'pnl-pos' : amount < 0 ? 'pnl-neg' : '';
-    return `<tr>
-      <td style="color:var(--text-2)">${fmtDateTime(f.time)}</td>
-      <td><strong>${delta.coin || '—'}</strong></td>
-      <td class="text-right" style="color:var(--text-2)">${delta.fundingRate ? (parseFloat(delta.fundingRate)*100).toFixed(4)+'%' : '—'}</td>
-      <td class="text-right ${amtCls}">${amount !== 0 ? fmtPnl(amount) : '—'}</td>
-      <td style="color:var(--text-2);font-size:11px">${delta.type || 'funding'}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ============================================================
-// PnL ANALYSIS
-// ============================================================
-function computePnlAnalysis() {
-  if (state.fills.length === 0) return;
-
-  const fills = state.fills;
-  const totalPnl = fills.reduce((s,f) => s + parseFloat(f.closedPnl||0), 0);
-  const totalFee = fills.reduce((s,f) => s + parseFloat(f.fee||0), 0);
-
-  const closedTrades = fills.filter(f => parseFloat(f.closedPnl||0) !== 0);
-  const wins = closedTrades.filter(f => parseFloat(f.closedPnl) > 0);
-  const losses = closedTrades.filter(f => parseFloat(f.closedPnl) < 0);
-  const winRate = closedTrades.length > 0 ? (wins.length / closedTrades.length * 100).toFixed(1) : '0';
-  const avgWin = wins.length > 0 ? wins.reduce((s,f) => s + parseFloat(f.closedPnl),0) / wins.length : 0;
-  const avgLoss = losses.length > 0 ? losses.reduce((s,f) => s + parseFloat(f.closedPnl),0) / losses.length : 0;
-  const totalWin = wins.reduce((s,f) => s + parseFloat(f.closedPnl),0);
-  const totalLoss = Math.abs(losses.reduce((s,f) => s + parseFloat(f.closedPnl),0));
-  const pf = totalLoss > 0 ? (totalWin / totalLoss).toFixed(2) : '∞';
-
-  const pnlEl = document.getElementById('pnl-total');
-  pnlEl.textContent = fmtPnl(totalPnl);
-  pnlEl.className = 'stat-value ' + (totalPnl > 0 ? 'pnl-pos' : 'pnl-neg');
-
-  setVal('pnl-winrate', winRate + '%');
-  setVal('pnl-wintrades', `${wins.length}W / ${losses.length}L / ${closedTrades.length} đóng`);
-  setVal('pnl-avgwin', fmtPnl(avgWin));
-  setVal('pnl-avgloss', fmtPnl(avgLoss));
-  setVal('pnl-profitfactor', pf);
-  setVal('pnl-totalfee', '-' + fmtUSD(totalFee));
-
-  // By coin
-  const byCoins = {};
-  fills.forEach(f => {
-    if (!byCoins[f.coin]) byCoins[f.coin] = { pnl: 0, fee: 0, win: 0, loss: 0, count: 0 };
-    const pnl = parseFloat(f.closedPnl || 0);
-    byCoins[f.coin].pnl += pnl;
-    byCoins[f.coin].fee += parseFloat(f.fee || 0);
-    byCoins[f.coin].count++;
-    if (pnl > 0) byCoins[f.coin].win++;
-    else if (pnl < 0) byCoins[f.coin].loss++;
-  });
-
-  const sorted = Object.entries(byCoins).sort((a,b) => Math.abs(b[1].pnl) - Math.abs(a[1].pnl));
-  const tbody = document.getElementById('tablePnlByCoin');
-  tbody.innerHTML = sorted.map(([coin, d]) => {
-    const netPnl = d.pnl - d.fee;
-    const wr = d.count > 0 ? ((d.win / (d.win + d.loss || 1)) * 100).toFixed(0) : '0';
-    const pnlCls = d.pnl > 0 ? 'pnl-pos' : d.pnl < 0 ? 'pnl-neg' : '';
-    const netCls = netPnl > 0 ? 'pnl-pos' : netPnl < 0 ? 'pnl-neg' : '';
-    return `<tr>
-      <td><strong>${coin}</strong></td>
-      <td class="text-right">${d.count}</td>
-      <td class="text-right" style="color:var(--green)">${d.win}</td>
-      <td class="text-right" style="color:var(--red)">${d.loss}</td>
-      <td class="text-right">${wr}%</td>
-      <td class="text-right ${pnlCls}">${fmtPnl(d.pnl)}</td>
-      <td class="text-right" style="color:var(--red)">-${fmtUSD(d.fee)}</td>
-      <td class="text-right ${netCls}">${fmtPnl(netPnl)}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ============================================================
-// GOOGLE SHEETS SYNC
-// ============================================================
-async function syncFillsToSheets() {
-  if (!cfg.sheetsUrl) { toast('error', 'Chưa có URL', 'Vui lòng cài đặt Apps Script URL'); return; }
-  if (state.fills.length === 0) { toast('error', 'Không có dữ liệu', 'Tải fills trước'); return; }
-
-  const btn = document.getElementById('btnSyncFills');
-  btn.disabled = true;
-  showSyncProgress(true);
-  appendSyncLog('Bắt đầu sync fills...');
-
-  const batchSize = 200;
-  let sent = 0;
-
-  for (let i = 0; i < state.fills.length; i += batchSize) {
-    const batch = state.fills.slice(i, i + batchSize);
-    const rows = batch.map(f => [
-      fmtDateTime(f.time), f.time, f.coin, f.side === 'B' ? 'BUY' : 'SELL',
-      f.dir || '', f.px, f.sz,
-      (parseFloat(f.px) * parseFloat(f.sz)).toFixed(4),
-      f.closedPnl || '0', f.fee || '0',
-      f.crossed ? 'Taker' : 'Maker',
-      f.oid, f.tid || '', f.hash || ''
-    ]);
-
-    try {
-      await postToSheets({ action: 'appendFills', rows });
-      sent += batch.length;
-      const pct = Math.round(sent / state.fills.length * 100);
-      updateProgress(pct);
-      appendSyncLog(`✓ Đã gửi ${sent}/${state.fills.length} fills`);
-    } catch(e) {
-      appendSyncLog(`✗ Lỗi batch ${i}: ${e.message}`);
-      toast('error', 'Lỗi sync', e.message);
-      break;
-    }
-  }
-
-  state.syncedCount = sent;
-  state.lastSync = new Date().toLocaleString('vi-VN');
-  saveCachedState();
-  updateSheetsSyncInfo();
-
-  btn.disabled = false;
-  showSyncProgress(false);
-  toast('success', 'Sync hoàn tất', `Đã sync ${sent} fills lên Sheets`);
-}
-
-async function syncPositionsToSheets() {
-  if (!cfg.sheetsUrl || state.positions.length === 0) { toast('error', 'Không có dữ liệu'); return; }
-  const rows = state.positions.map(ap => {
-    const p = ap.position;
-    return [
-      fmtDateTime(Date.now()), p.coin,
-      parseFloat(p.szi) > 0 ? 'LONG' : 'SHORT',
-      Math.abs(parseFloat(p.szi)), p.entryPx,
-      p.unrealizedPnl, p.marginUsed,
-      p.leverage?.value || '', p.liquidationPx || ''
-    ];
-  });
-  try {
-    await postToSheets({ action: 'setPositions', rows });
-    toast('success', 'Sync positions', `${rows.length} vị thế`);
-  } catch(e) { toast('error', 'Lỗi', e.message); }
-}
-
-async function syncBalanceToSheets() {
-  if (!cfg.sheetsUrl || !state.clearinghouse) { toast('error', 'Không có dữ liệu'); return; }
-  const ms = state.clearinghouse.marginSummary || {};
-  const spotBalances = state.spotBalance?.balances || [];
-  const usdtSpot = parseFloat((spotBalances.find(b => b.coin === 'USDT') || {}).total || 0);
-  const usdcSpot = parseFloat((spotBalances.find(b => b.coin === 'USDC') || {}).total || 0);
-  const row = [
-    fmtDateTime(Date.now()), Date.now(),
-    ms.accountValue, state.clearinghouse.withdrawable,
-    ms.totalMarginUsed, ms.totalNtlPos,
-    usdtSpot, usdcSpot
-  ];
-  try {
-    await postToSheets({ action: 'appendBalance', rows: [row] });
-    toast('success', 'Sync balance', 'Đã lưu snapshot số dư (incl. USDT/USDC spot)');
-  } catch(e) { toast('error', 'Lỗi', e.message); }
-}
-
-async function syncAllToSheets() {
-  await syncFillsToSheets();
-  await syncPositionsToSheets();
-  await syncBalanceToSheets();
-}
-
-async function postToSheets(payload) {
-  const res = await fetch(cfg.sheetsUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-    mode: 'no-cors'
-  });
-  // no-cors so we can't read response, just trust it
-}
-
-async function testSheetsConnection() {
-  if (!cfg.sheetsUrl) { toast('error', 'Chưa có URL'); return; }
-  try {
-    await postToSheets({ action: 'ping' });
-    toast('success', 'Test gửi', 'Đã gửi ping. Kiểm tra sheet để xác nhận (do CORS nên không thể đọc response).');
-  } catch(e) { toast('error', 'Lỗi', e.message); }
-}
-
-function updateSheetsSyncInfo() {
-  document.getElementById('sheets-fillsSynced').textContent = state.syncedCount || 0;
-  document.getElementById('sheets-lastSync').textContent = state.lastSync || 'Chưa sync';
-}
-
-function showSyncProgress(show) {
-  const el = document.getElementById('syncProgress');
-  const log = document.getElementById('syncLog');
-  el.style.display = show ? 'block' : 'none';
-  log.style.display = show ? 'block' : 'none';
-  if (show) { log.innerHTML = ''; updateProgress(0); }
-}
-
-function updateProgress(pct) {
-  document.getElementById('syncProgressFill').style.width = pct + '%';
-}
-
-function appendSyncLog(msg) {
-  const el = document.getElementById('syncLog');
-  el.innerHTML += `<div style="margin-bottom:2px;opacity:0.8">${msg}</div>`;
-  el.scrollTop = el.scrollHeight;
-}
-
-// ============================================================
-// EXPORT
-// ============================================================
-function exportCSV() {
-  exportFillsCSV();
-}
-
-function exportFillsCSV() {
-  if (state.fills.length === 0) { toast('error', 'Không có dữ liệu'); return; }
-  const headers = ['Time', 'Timestamp', 'Coin', 'Side', 'Direction', 'Price', 'Size', 'Value', 'ClosedPnL', 'Fee', 'Type', 'OID', 'TID', 'Hash'];
-  const rows = state.fills.map(f => [
-    fmtDateTime(f.time), f.time, f.coin,
-    f.side === 'B' ? 'BUY' : 'SELL', f.dir || '',
-    f.px, f.sz,
-    (parseFloat(f.px) * parseFloat(f.sz)).toFixed(4),
-    f.closedPnl || '0', f.fee || '0',
-    f.crossed ? 'Taker' : 'Maker',
-    f.oid, f.tid || '', f.hash || ''
-  ]);
-  downloadCSV([headers, ...rows], `hl_fills_${Date.now()}.csv`);
-}
-
-function exportJSON() {
-  const data = { fills: state.fills, positions: state.positions, clearinghouse: state.clearinghouse, exportedAt: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = `hl_export_${Date.now()}.json`; a.click();
-  toast('success', 'Đã export JSON');
-}
-
-function downloadCSV(rows, filename) {
-  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = filename; a.click();
-  toast('success', 'Đã export CSV');
-}
-
-// ============================================================
-// APPS SCRIPT CODE
-// ============================================================
-const APPS_SCRIPT_CODE = `// HL Tracker — Google Apps Script
-// Dán vào Apps Script và Deploy as Web App
-
-const SHEET_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
-
-function doPost(e) {
-  try {
-    const payload = JSON.parse(e.postData.contents);
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-
-    if (payload.action === 'appendFills') {
-      const sheet = getOrCreateSheet(ss, 'Fills', [
-        'Time','Timestamp','Coin','Side','Direction','Price','Size',
-        'Value(USDC)','ClosedPnL','Fee','Type','OID','TID','Hash'
-      ]);
-      if (payload.rows && payload.rows.length > 0) {
-        sheet.getRange(sheet.getLastRow() + 1, 1, payload.rows.length, payload.rows[0].length)
-          .setValues(payload.rows);
-      }
-    }
-
-    if (payload.action === 'setPositions') {
-      const sheet = getOrCreateSheet(ss, 'Positions', [
-        'SnapshotTime','Coin','Side','Size','EntryPrice',
-        'UnrealizedPnL','MarginUsed','Leverage','LiqPrice'
-      ]);
-      // Clear old data and rewrite
-      if (sheet.getLastRow() > 1) sheet.deleteRows(2, sheet.getLastRow() - 1);
-      if (payload.rows && payload.rows.length > 0) {
-        sheet.getRange(2, 1, payload.rows.length, payload.rows[0].length)
-          .setValues(payload.rows);
-      }
-    }
-
-    if (payload.action === 'appendBalance') {
-      const sheet = getOrCreateSheet(ss, 'Balance', [
-        'Time','Timestamp','AccountValue','Withdrawable','MarginUsed','TotalNtl'
-      ]);
-      if (payload.rows && payload.rows.length > 0) {
-        sheet.getRange(sheet.getLastRow() + 1, 1, payload.rows.length, payload.rows[0].length)
-          .setValues(payload.rows);
-      }
-    }
-
-    if (payload.action === 'ping') {
-      const sheet = getOrCreateSheet(ss, 'Log', ['Time','Message']);
-      sheet.appendRow([new Date().toLocaleString(), 'Ping from HL Tracker']);
-    }
-
-    return ContentService.createTextOutput(JSON.stringify({ ok: true }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch(err) {
-    return ContentService.createTextOutput(JSON.stringify({ error: err.message }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({ ok: true, msg: 'HL Tracker Apps Script Active' }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-function getOrCreateSheet(ss, name, headers) {
-  let sheet = ss.getSheetByName(name);
-  if (!sheet) {
-    sheet = ss.insertSheet(name);
-    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-    sheet.getRange(1, 1, 1, headers.length)
-      .setBackground('#1a1a2e')
-      .setFontColor('#58a6ff')
-      .setFontWeight('bold');
-    sheet.setFrozenRows(1);
-  }
-  return sheet;
-}`;
-
-function showAppsScript() {
-  document.getElementById('appsScriptCode').value = APPS_SCRIPT_CODE;
-  document.getElementById('modalAppsScript').classList.add('open');
-}
-
-function copyAppsScript() {
-  navigator.clipboard.writeText(APPS_SCRIPT_CODE).then(() => {
-    toast('success', 'Đã copy', 'Code đã được copy vào clipboard');
-  });
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-
-// ============================================================
-// HELPERS
-// ============================================================
-function setSyncStatus(state, label) {
-  const dot = document.getElementById('syncDot');
-  dot.className = 'sync-dot ' + (state === 'syncing' ? 'syncing' : state === 'ok' ? 'ok' : state === 'error' ? 'error' : '');
-  document.getElementById('syncLabel').textContent = label;
-}
-
-function updateBadges() {
-  document.getElementById('badge-positions').textContent = state.positions.length;
-  document.getElementById('badge-fills').textContent = state.fills.length;
-  document.getElementById('badge-orders').textContent = state.openOrders.length;
-}
-
-function setVal(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = val;
-}
-
-function fmtUSD(n) {
-  if (isNaN(n)) return '—';
-  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-function fmtPnl(n) {
-  if (isNaN(n)) return '—';
-  const sign = n >= 0 ? '+' : '';
-  return sign + '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-function fmtNum(n) {
-  if (isNaN(n)) return '—';
-  if (n >= 1000) return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
-  return n.toLocaleString('en-US', { maximumFractionDigits: 6 });
-}
-
-function fmtTime(ts) {
-  return new Date(ts).toLocaleTimeString('vi-VN');
-}
-
-function fmtDateTime(ts) {
-  return new Date(ts).toLocaleString('vi-VN', { dateStyle: 'short', timeStyle: 'short' });
-}
-
-// ============================================================
+// ══════════════════════════════════════════
 // TOAST
-// ============================================================
-function toast(type, title, msg = '') {
-  const icons = { success: '✓', error: '✗', info: 'ℹ', warning: '⚠' };
-  const container = document.getElementById('toastContainer');
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.innerHTML = `
-    <div class="toast-icon">${icons[type] || 'ℹ'}</div>
-    <div class="toast-body">
-      <div class="toast-title">${title}</div>
-      ${msg ? `<div class="toast-msg">${msg}</div>` : ''}
-    </div>
-    <div class="toast-close" onclick="this.parentElement.remove()">×</div>
-  `;
-  container.appendChild(el);
-  setTimeout(() => el.remove(), 4000);
+// ══════════════════════════════════════════
+function toast(msg,ms=2500){const el=document.getElementById('toastEl');el.textContent=msg;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),ms);}
+
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
+function goTab(n){
+  ['dash','hist','set'].forEach(x=>{
+    document.getElementById('pg-'+x).classList.toggle('show',x===n);
+    document.getElementById('ti-'+x).classList.toggle('on',x===n);
+  });
+  S.curTab=n;
+  document.getElementById('content').scrollTop=0;
+  if(n==='hist'){applyRange();renderCal();renderCalMonthly();}
 }
 
-// ============================================================
-// START
-// ============================================================
-document.addEventListener('DOMContentLoaded', init);
+// ══════════════════════════════════════════
+// API
+// ══════════════════════════════════════════
+async function hl(body){
+  try{const r=await fetch('https://api.hyperliquid.xyz/info',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return r.ok?await r.json():null;}catch{return null;}
+}
+
+// ══════════════════════════════════════════
+// DASHBOARD
+// Total balance = spotClearinghouseState USDC total
+// (= wallet USDC including collateral + unrealized PnL already embedded)
+// This matches app.hyperliquid.xyz "Total Balance" shown as 298.43
+// ══════════════════════════════════════════
+async function loadDash(){
+  if(!S.wallet){heroEmpty();setEmp('posList','🔗','Nhập địa chỉ ví ở Cài đặt');setEmp('ooWrap','📋','Chưa có lệnh');return;}
+
+  const[perp,spot,orders]=await Promise.all([
+    hl({type:'clearinghouseState',user:S.wallet}),
+    hl({type:'spotClearinghouseState',user:S.wallet}),
+    hl({type:'openOrders',user:S.wallet})
+  ]);
+  if(!perp){heroEmpty();setEmp('posList','⚠️','Lỗi kết nối API');return;}
+
+  // ── BALANCE ─────────────────────────────────────────────
+  // spotClearinghouseState → balances[USDC].total = tổng số dư USDC
+  // (bao gồm số dư ví + collateral đang dùng cho perp)
+  // Đây là con số "Total Balance" hiển thị trên app.hyperliquid.xyz = 298.43
+  let spotUsdcTotal=0, spotUsdcAvail=0;
+  if(spot?.balances){
+    const u=spot.balances.find(b=>b.coin==='USDC');
+    if(u){
+      spotUsdcTotal=parseFloat(u.total||0);       // 298.43 ← tổng số dư
+      spotUsdcAvail=parseFloat(u.hold!=null?(u.total-u.hold):u.total||0);
+    }
+  }
+
+  const positions=(perp.assetPositions||[]).filter(p=>parseFloat(p.position?.szi||0)!==0);
+  const unrealPnl=positions.reduce((s,p)=>s+parseFloat(p.position?.unrealizedPnl||0),0);
+  const withdrawable=parseFloat(perp.withdrawable||0);
+  const marginUsed=parseFloat(perp.marginSummary?.totalMarginUsed||0);
+
+  // Tổng số dư hiển thị = spotUsdcTotal (nếu có) hoặc fallback accountValue
+  const totalBalance = spotUsdcTotal > 0
+    ? spotUsdcTotal
+    : parseFloat(perp.marginSummary?.accountValue||0);
+
+  // Số dư USDC thuần (không tính unrealized) = totalBalance - unrealPnl
+  const usdcPure = totalBalance - unrealPnl;
+
+  // Hero
+  document.getElementById('hTotal').textContent=fmt$(totalBalance);
+  document.getElementById('hUsdc').textContent='$'+fmt$(usdcPure>0?usdcPure:totalBalance);
+
+  const uEl=document.getElementById('hUnreal');
+  uEl.textContent=(unrealPnl>=0?'+$':'-$')+Math.abs(unrealPnl).toFixed(2);
+  uEl.style.color=unrealPnl>=0?'var(--g)':'var(--r)';
+
+  document.getElementById('hWith').textContent='$'+fmt$(Math.max(0,withdrawable));
+
+  const badge=document.getElementById('hUpnlBadge');
+  badge.textContent=(unrealPnl>=0?'+':'')+'$'+unrealPnl.toFixed(2)+' UPNL';
+  badge.className='upnl-badge '+(unrealPnl>=0?'up':'dn');
+
+  // Tiles
+  document.getElementById('tPos').textContent=positions.length;
+  document.getElementById('tOo').textContent=Array.isArray(orders)?orders.length:'0';
+  const todK=dk(new Date());
+  const todF=S.fills.filter(f=>dk(new Date(f.time))===todK);
+  const todPnl=todF.reduce((s,f)=>s+parseFloat(f.closedPnl||0),0);
+  const tpEl=document.getElementById('tTodayPnl');
+  tpEl.textContent=pnlFmt(todPnl);tpEl.style.color=todPnl>=0?'var(--g)':'var(--r)';
+  document.getElementById('tTodayCnt').textContent=todF.length+' lệnh hôm nay';
+  document.getElementById('posTs').textContent=new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  renderPositions(positions);
+  renderOrders(Array.isArray(orders)?orders:[]);
+}
+
+// ══════════════════════════════════════════
+// POSITIONS — Exchange style
+// ══════════════════════════════════════════
+const CX={BTC:'#f7931a',ETH:'#627eea',SOL:'#9945ff',BNB:'#f3ba2f',DOGE:'#c2a633',XRP:'#346aa9',AVAX:'#e84142',LINK:'#2a5ada',ARB:'#28a0f0',OP:'#ff0420',SUI:'#4da2ff',TIA:'#7b5bf5',INJ:'#00b2ff',APT:'#00b5d4',WIF:'#c17a3a',PEPE:'#3da639',WLD:'#222222',HYPE:'#22c55e'};
+function cx(c){return CX[c]||'#2563eb';}
+
+function renderPositions(positions){
+  const w=document.getElementById('posList');
+  if(!positions.length){w.innerHTML=`<div class="empty"><div class="ei">📊</div><div class="et">Không có vị thế đang mở</div></div>`;return;}
+  w.innerHTML=positions.map(p=>{
+    const pos=p.position,coin=pos.coin,szi=parseFloat(pos.szi),isL=szi>0;
+    const entry=parseFloat(pos.entryPx||0);
+    const upnl=parseFloat(pos.unrealizedPnl||0);
+    const lev=pos.leverage?.value||'--';
+    const liq=pos.liquidationPx?parseFloat(pos.liquidationPx).toFixed(pos.liquidationPx>1?2:4):'--';
+    const mUsed=parseFloat(pos.marginUsed||0);
+    const roe=parseFloat(pos.returnOnEquity||0)*100;
+    const sz=Math.abs(szi);
+    const c=cx(coin);
+    const pnlColor=upnl>=0?'var(--g)':'var(--r)';
+    const roeColor=roe>=0?'var(--g)':'var(--r)';
+    // Mark price from position if available
+    const markPx=parseFloat(pos.markPx||pos.currentPrice||0);
+
+    // Build metrics — only show if value exists
+    const metrics=[];
+    metrics.push({l:`Size (${coin})`, v: sz.toFixed(sz<1?4:sz<100?3:2)});
+    if(mUsed>0) metrics.push({l:'Margin (USDT)', v:'$'+mUsed.toFixed(2)});
+    metrics.push({l:'Entry Price', v: entry<1?entry.toFixed(4):'$'+entry.toFixed(2)});
+    if(markPx>0) metrics.push({l:'Mark Price', v: markPx<1?markPx.toFixed(4):'$'+markPx.toFixed(2)});
+    if(liq!=='--') metrics.push({l:'Liq. Price', v: liq<1?liq:'$'+liq});
+
+    // Pad to multiple of 3
+    while(metrics.length%3!==0) metrics.push({l:'',v:''});
+
+    return `<div class="pc">
+      <div class="pc-header">
+        <div class="pc-header-l">
+          <div class="pc-icon" style="background:${c}18;color:${c}">${coin.slice(0,4)}</div>
+          <div>
+            <div class="pc-title">${coin}<span>USDT</span></div>
+            <div class="pc-tags">
+              <span class="pc-tag perp">Perp</span>
+              <span class="pc-tag cross">Cross</span>
+              <span class="pc-tag lev">${lev}X</span>
+            </div>
+          </div>
+        </div>
+        <div class="pc-side-badge ${isL?'L':'S'}">${isL?'LONG':'SHORT'}</div>
+      </div>
+
+      <div class="pc-pnl-hero">
+        <div class="pc-pnl-hero-item">
+          <div class="pc-phl">PNL (USDT)</div>
+          <div class="pc-phv" style="color:${pnlColor}">${upnl>=0?'+':''}${upnl.toFixed(2)}</div>
+        </div>
+        <div class="pc-pnl-hero-item">
+          <div class="pc-phl">ROI</div>
+          <div class="pc-phv" style="color:${roeColor}">${roe>=0?'+':''}${roe.toFixed(2)}%</div>
+        </div>
+      </div>
+
+      <div class="pc-metrics">
+        ${metrics.map(m=>m.l?`<div class="pc-m"><div class="pc-ml">${m.l}</div><div class="pc-mv">${m.v}</div></div>`:`<div class="pc-m"></div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// OPEN ORDERS
+// ══════════════════════════════════════════
+function renderOrders(orders){
+  document.getElementById('ooMeta').textContent=orders.length?orders.length+' lệnh':'';
+  const w=document.getElementById('ooWrap');
+  if(!orders.length){w.innerHTML=`<div class="empty"><div class="ei">📋</div><div class="et">Không có lệnh đang đặt</div></div>`;return;}
+  w.innerHTML=`<div class="oo-card">${orders.map(o=>{
+    const coin=(o.coin||'???').replace('-PERP','');
+    const isL=o.side==='B';
+    const px=parseFloat(o.limitPx||o.triggerPx||0);
+    const sz=parseFloat(o.sz||0);
+    const c=cx(coin);
+    const ot=(o.orderType||'limit').toLowerCase();
+    const tag=ot.includes('tp')?'tp':ot.includes('sl')?'sl':'lim';
+    const lbl=tag==='tp'?'TP':tag==='sl'?'SL':'LIMIT';
+    return `<div class="oo-item">
+      <div class="oo-l">
+        <div class="oo-ico" style="background:${c}15;color:${c}">${coin.slice(0,4)}</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:5px">
+            <div class="oo-coin">${coin}-PERP</div>
+            <div class="oo-tag ${tag}">${lbl}</div>
+          </div>
+          <div class="oo-inf"><span style="color:${isL?'var(--g)':'var(--r)'}">${isL?'Buy / Long':'Sell / Short'}</span>${o.reduceOnly?' · reduce':''}</div>
+        </div>
+      </div>
+      <div class="oo-r">
+        <div class="oo-px" style="color:${isL?'var(--g)':'var(--r)'}">${px<1?'$'+px.toFixed(4):'$'+px.toFixed(2)}</div>
+        <div class="oo-sz">${sz.toFixed(4)} ${coin}</div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ══════════════════════════════════════════
+// HISTORY
+// ══════════════════════════════════════════
+async function loadHistory(){
+  if(!S.wallet){S.fills=[];S.dpnl={};renderTrades();return;}
+  const data=await hl({type:'userFills',user:S.wallet});
+  S.fills=Array.isArray(data)?data.sort((a,b)=>b.time-a.time):[];
+  S.dpnl={};
+  S.fills.forEach(t=>{const k=dk(new Date(t.time));S.dpnl[k]=(S.dpnl[k]||0)+parseFloat(t.closedPnl||0);});
+  if(S.curTab==='hist'){applyRange();renderCal();renderCalMonthly();}
+}
+
+function filteredFills(){
+  return S.fills.filter(f=>{
+    const d=new Date(f.time);
+    if(S.dateFrom&&d<S.dateFrom)return false;
+    if(S.dateTo&&d>S.dateTo)return false;
+    return true;
+  });
+}
+
+function applyRange(){renderPnlSummary();renderBarChart();renderTrades();}
+
+function setRange(el){
+  document.querySelectorAll('.dfs').forEach(e=>e.classList.remove('on'));el.classList.add('on');
+  const r=el.dataset.r,now=new Date(),y=now.getFullYear(),m=now.getMonth(),d=now.getDate();
+  let from,to;
+  if(r==='today'){from=new Date(y,m,d);to=new Date(y,m,d,23,59,59);}
+  else if(r==='7d'){from=new Date(y,m,d-6);to=new Date(y,m,d,23,59,59);}
+  else if(r==='30d'){from=new Date(y,m,d-29);to=new Date(y,m,d,23,59,59);}
+  else if(r==='month'){from=new Date(y,m,1);to=new Date(y,m+1,0,23,59,59);}
+  else{from=null;to=null;}
+  S.dateFrom=from;S.dateTo=to;
+  document.getElementById('dfFrom').value=from?dateFmt(from):'';
+  document.getElementById('dfTo').value=to?dateFmt(to):'';
+  applyRange();
+}
+
+function readDateInputs(){
+  const f=document.getElementById('dfFrom').value,t=document.getElementById('dfTo').value;
+  S.dateFrom=f?new Date(f):null;
+  if(t){const d=new Date(t);d.setHours(23,59,59);S.dateTo=d;}else S.dateTo=null;
+}
+
+function renderPnlSummary(){
+  const ff=filteredFills();
+  let tot=0,w=0,l=0;
+  ff.forEach(t=>{const v=parseFloat(t.closedPnl||0);tot+=v;if(v>0)w++;else if(v<0)l++;});
+  const wr=w+l?Math.round(w/(w+l)*100):0;
+  const pe=document.getElementById('psPnl');pe.textContent=pnlFmt(tot);pe.style.color=tot>=0?'var(--g)':'var(--r)';
+  document.getElementById('psWr').textContent=wr+'%';
+  document.getElementById('psW').textContent=w;
+  document.getElementById('psL').textContent=l;
+  document.getElementById('psTot').textContent=ff.length;
+}
+
+function renderBarChart(){
+  const ff=filteredFills();
+  if(!ff.length){document.getElementById('bcBars').innerHTML=`<div style="display:flex;align-items:center;justify-content:center;flex:1;font-size:11px;color:var(--t3)">Không có dữ liệu</div>`;return;}
+  const dayMap={};
+  ff.forEach(t=>{const k=dk(new Date(t.time));dayMap[k]=(dayMap[k]||0)+parseFloat(t.closedPnl||0);});
+  const days=Object.keys(dayMap).sort().slice(-14);
+  const vals=days.map(k=>dayMap[k]);
+  const mx=Math.max(...vals.map(Math.abs),0.01);
+  const tot=vals.reduce((s,v)=>s+v,0);
+  document.getElementById('bcTl').textContent='PnL '+days.length+' ngày';
+  const bEl=document.getElementById('bcTot');bEl.textContent=pnlFmt(tot);bEl.style.color=tot>=0?'var(--g)':'var(--r)';
+  document.getElementById('bcBars').innerHTML=days.map((k,i)=>{
+    const v=vals[i],h=Math.max(Math.round(Math.abs(v)/mx*54),2);
+    const cls=v>0?'g':v<0?'r':'z';
+    const pts=k.split('-'),lbl=pts[2]+'/'+pts[1];
+    const n=v!==0?(v>0?'+':'')+'$'+Math.abs(v).toFixed(0):'';
+    return `<div class="bc-col"><div class="bc-num">${n}</div><div class="bc-inner"><div class="bc-bar ${cls}" style="height:${h}px"></div></div><div class="bc-lbl">${lbl}</div></div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// CALENDAR
+// ══════════════════════════════════════════
+function calShift(dir){
+  S.calM+=dir;if(S.calM>11){S.calM=0;S.calY++;}if(S.calM<0){S.calM=11;S.calY--;}
+  S.openDay=null;document.getElementById('dayPop').classList.remove('open');
+  renderCal();renderCalMonthly();
+}
+
+function renderCal(){
+  const MN=['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
+  document.getElementById('calTitle').textContent=MN[S.calM]+' '+S.calY;
+  const first=new Date(S.calY,S.calM,1).getDay(),total=new Date(S.calY,S.calM+1,0).getDate(),now=new Date();
+  let html='<div class="cc empty"><div class="cc-num"></div><div class="cc-pnl"></div></div>'.repeat(first);
+  for(let d=1;d<=total;d++){
+    const k=`${S.calY}-${S.calM+1}-${d}`,pnl=S.dpnl[k];
+    const hasDat=pnl!==undefined,isProfit=hasDat&&pnl>0,isLoss=hasDat&&pnl<0;
+    const isToday=now.getFullYear()===S.calY&&now.getMonth()===S.calM&&now.getDate()===d;
+    const isSel=S.openDay===k;
+    let cls='cc';
+    if(hasDat)cls+=' has-data';
+    if(isProfit)cls+=' profit';if(isLoss)cls+=' loss';
+    if(isToday)cls+=' today';if(isSel)cls+=' sel';
+    let pnlTxt='';
+    if(hasDat){const a=Math.abs(pnl);pnlTxt=(pnl>=0?'+':'-')+(a>=100?Math.round(a)+'':a.toFixed(a<10?1:0));}
+    html+=`<div class="${cls}" onclick="togDay(${d},'${k}')"><div class="cc-num">${d}</div><div class="cc-pnl">${pnlTxt}</div></div>`;
+  }
+  document.getElementById('calGrid').innerHTML=html;
+}
+
+function renderCalMonthly(){
+  let tot=0,wins=0,loss=0;
+  Object.entries(S.dpnl).forEach(([k,v])=>{
+    const p=k.split('-');
+    if(+p[0]===S.calY&&+p[1]-1===S.calM){tot+=v;if(v>0)wins++;else if(v<0)loss++;}
+  });
+  const mn=['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'];
+  document.getElementById('cmLabel').textContent='Tổng '+mn[S.calM]+'/'+S.calY;
+  document.getElementById('cmDetail').textContent=wins+' ngày lãi · '+loss+' ngày lỗ';
+  const el=document.getElementById('cmVal');el.textContent=pnlFmt(tot);el.style.color=tot>=0?'var(--g)':'var(--r)';
+}
+
+function togDay(d,key){
+  const pop=document.getElementById('dayPop');
+  if(S.openDay===key){S.openDay=null;pop.classList.remove('open');renderCal();return;}
+  S.openDay=key;
+  const pnl=S.dpnl[key],trs=S.fills.filter(t=>dk(new Date(t.time))===key);
+  if(!trs.length&&pnl===undefined){pop.classList.remove('open');renderCal();return;}
+  renderCal();
+  const pc=(pnl||0)>=0?'var(--g)':'var(--r)';
+  pop.classList.add('open');
+  pop.innerHTML=`<div class="dp-head">
+    <div style="font-size:11.5px;font-weight:700">${d}/${S.calM+1}/${S.calY} · <span style="color:${pc};font-family:var(--mono)">${pnlFmt(pnl||0)}</span> · ${trs.length} lệnh</div>
+    <div class="dp-x" onclick="S.openDay=null;document.getElementById('dayPop').classList.remove('open');renderCal()">✕</div>
+  </div>
+  ${trs.slice(0,8).map(t=>{const v=parseFloat(t.closedPnl||0),c=cx(t.coin);
+    return `<div class="dp-row">
+      <div style="display:flex;align-items:center;gap:6px">
+        <div style="width:22px;height:22px;border-radius:5px;background:${c}15;color:${c};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:800">${(t.coin||'?').slice(0,3)}</div>
+        <div style="font-size:11px;font-weight:600">${t.coin} <span style="color:var(--t3);font-weight:400">${t.side==='B'?'Long':'Short'}</span></div>
+      </div>
+      <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:${v>=0?'var(--g)':'var(--r)'}">${v>=0?'+':''}$${v.toFixed(2)}</div>
+    </div>`;
+  }).join('')}
+  ${trs.length>8?`<div style="text-align:center;font-size:10px;color:var(--t3);padding-top:6px">+${trs.length-8} lệnh nữa</div>`:''}`;
+}
+
+// ══════════════════════════════════════════
+// TRADES
+// ══════════════════════════════════════════
+function setF(el){document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');S.filter=el.dataset.f;renderTrades();}
+
+function renderTrades(){
+  let tr=filteredFills();
+  if(S.filter==='win')tr=tr.filter(t=>parseFloat(t.closedPnl||0)>0);
+  else if(S.filter==='loss')tr=tr.filter(t=>parseFloat(t.closedPnl||0)<0);
+  else if(S.filter==='long')tr=tr.filter(t=>t.side==='B');
+  else if(S.filter==='short')tr=tr.filter(t=>t.side==='A');
+  document.getElementById('tCount').textContent=tr.length+' lệnh';
+  const w=document.getElementById('tList');
+  if(!tr.length){w.innerHTML=`<div class="empty" style="border-radius:0;border:none;border-top:1px solid var(--b1)"><div class="ei">📭</div><div class="et">${S.wallet?'Không có lệnh':'Nhập địa chỉ ví'}</div></div>`;return;}
+  w.innerHTML=tr.slice(0,100).map(t=>{
+    const v=parseFloat(t.closedPnl||0),c=cx(t.coin);
+    const dt=new Date(t.time);
+    const ds=`${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+    return `<div class="t-item">
+      <div style="display:flex;align-items:center;gap:9px">
+        <div class="t-ico" style="background:${c}15;color:${c}">${(t.coin||'?').slice(0,4)}</div>
+        <div><div class="t-coin">${t.coin}-PERP</div><div class="t-sub">${t.side==='B'?'Long':'Short'} · $${parseFloat(t.px||0).toFixed(2)} · ${parseFloat(t.sz||0).toFixed(4)}</div></div>
+      </div>
+      <div><div class="t-pnl" style="color:${v>=0?'var(--g)':'var(--r)'}">${v>=0?'+':''}$${v.toFixed(2)}</div><div class="t-dt">${ds}</div></div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════
+function saveWal(){const v=document.getElementById('walInp').value.trim();if(!v||!v.startsWith('0x')){toast('⚠️ Địa chỉ phải bắt đầu bằng 0x');return;}S.wallet=v;_ls('hl_w',v);document.getElementById('walPrev').textContent=v.slice(0,8)+'...'+v.slice(-6);toast('✅ Đã lưu — đang tải...');doRefresh();}
+function saveScr(){const v=document.getElementById('scrInp').value.trim();S.script=v;_ls('hl_s',v);document.getElementById('scrPrev').textContent=v?'Đã cài đặt ✓':'Chưa cài đặt';toast('✅ Đã lưu Script URL');}
+function saveSht(){const v=document.getElementById('shtInp').value.trim();S.sheet=v;_ls('hl_sh',v);document.getElementById('shtPrev').textContent=v?'Đã cài đặt ✓':'Chưa cài đặt';toast('✅ Đã lưu Sheets URL');}
+function openSht(){if(!S.sheet){toast('⚠️ Chưa có link Sheets');return;}window.open(S.sheet,'_blank');}
+function togAuto(el){el.classList.toggle('on');S.auto=el.classList.contains('on');_ls('hl_a',S.auto);updAutoLbl();setupTimer();toast(S.auto?'⚡ Bật real-time':'⏸ Tắt');}
+function chgInt(){S.int=+document.getElementById('intSel').value;_ls('hl_i',S.int);updAutoLbl();setupTimer();}
+function updAutoLbl(){const m={1000:'1 giây',5000:'5 giây',10000:'10 giây',30000:'30 giây'};document.getElementById('autoLbl').textContent=(S.auto?'Đang bật':'Đã tắt')+' · mỗi '+(m[S.int]||S.int+'ms');}
+function clearAll(){if(!confirm('Xóa tất cả cài đặt?'))return;localStorage.clear();location.reload();}
+function setupTimer(){clearInterval(S.timer);if(S.auto)S.timer=setInterval(doRefresh,S.int);}
+
+// ══════════════════════════════════════════
+// REFRESH
+// ══════════════════════════════════════════
+let _busy=false;
+async function doRefresh(){
+  if(_busy)return;_busy=true;
+  document.getElementById('rfBtn').classList.add('spin');
+  await Promise.all([loadDash(),loadHistory()]);
+  document.getElementById('rfBtn').classList.remove('spin');
+  _busy=false;
+}
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+function fmt$(n){return isNaN(n)?'0.00':n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function pnlFmt(v){return(v>=0?'+$':'-$')+Math.abs(v).toFixed(2);}
+function dk(d){return`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;}
+function dateFmt(d){return d.toISOString().split('T')[0];}
+function setEmp(id,ic,tx){document.getElementById(id).innerHTML=`<div class="empty"><div class="ei">${ic}</div><div class="et">${tx}</div></div>`;}
+function heroEmpty(){['hTotal','hUsdc','hWith'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='--';});const u=document.getElementById('hUnreal');if(u){u.textContent='--';u.style.color='var(--t3)';}const b=document.getElementById('hUpnlBadge');if(b){b.textContent='-- UPNL';b.className='upnl-badge up';}}
+
+// ══════════════════════════════════════════
+// DATE INPUT EVENTS
+// ══════════════════════════════════════════
+function initDateInputs(){
+  ['dfFrom','dfTo'].forEach(id=>{document.getElementById(id).addEventListener('change',()=>{document.querySelectorAll('.dfs').forEach(e=>e.classList.remove('on'));readDateInputs();applyRange();});});
+  const t=dateFmt(new Date());
+  document.getElementById('dfFrom').value=t;document.getElementById('dfTo').value=t;
+  S.dateFrom=new Date(t);const de=new Date(t);de.setHours(23,59,59);S.dateTo=de;
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+function init(){
+  if(S.wallet){document.getElementById('walInp').value=S.wallet;document.getElementById('walPrev').textContent=S.wallet.slice(0,8)+'...'+S.wallet.slice(-6);}
+  if(S.script){document.getElementById('scrInp').value=S.script;document.getElementById('scrPrev').textContent='Đã cài đặt ✓';}
+  if(S.sheet){document.getElementById('shtInp').value=S.sheet;document.getElementById('shtPrev').textContent='Đã cài đặt ✓';}
+  if(!S.auto)document.getElementById('autoTog').classList.remove('on');
+  document.getElementById('intSel').value=S.int;
+  updAutoLbl();initDateInputs();renderCal();renderCalMonthly();
+  setupTimer();startClock();doRefresh();
+}
+init();
 </script>
 </body>
-</html>l
+</html>
