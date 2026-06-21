@@ -17,7 +17,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg); color: var(--text); font-family: var(--font); height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
     header {
-      height: 56px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between;
+      height: 56px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between;
       background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; z-index: 100;
     }
     .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
@@ -30,19 +30,19 @@
     @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
     .status-txt { font-size: 11px; font-weight: 600; color: var(--muted); }
     .btn-icon {
-      background: none; border: none; color: var(--muted); width: 34px; height: 34px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: 0.15s;
+      background: none; border: none; color: var(--muted); width: 40px; height: 40px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: 0.15s;
     }
     .btn-icon:active { background: var(--surface2); color: var(--text); transform: scale(0.92); }
     .app { flex: 1; overflow: hidden; position: relative; }
     .screen {
-      display: none; flex-direction: column; gap: 14px; padding: 14px 18px calc(70px + var(--safe-b));
+      display: none; flex-direction: column; gap: 14px; padding: 14px 12px calc(75px + var(--safe-b));
       overflow-y: auto; height: 100%; background: var(--bg);
     }
     .screen.active { display: flex; animation: fadeUp 0.2s ease; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 1px 3px rgba(0,0,0,0.03); overflow: hidden; }
-    .card-pad { padding: 18px; }
+    .card-pad { padding: 16px; }
     .flex-row { display: flex; justify-content: space-between; align-items: center; }
     .ccy-switch { display: flex; background: var(--surface2); padding: 3px; border-radius: 10px; gap: 2px; border: 1px solid var(--border); }
     .ccy-btn { background: none; border: none; color: var(--muted); padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.15s; }
@@ -50,27 +50,23 @@
     .bal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border-radius: 10px; overflow: hidden; margin-top: 14px; }
     .bal-cell { background: var(--surface2); padding: 12px 14px; }
     .bal-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
-    .bal-val { font-family: var(--mono); font-size: 14px; font-weight: 600; margin-top: 4px; }
+    .bal-val { font-family: var(--mono); font-size: 15px; font-weight: 600; margin-top: 4px; }
     .tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); }
     .tab {
       flex: 1; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted);
-      font-size: 12px; font-weight: 600; padding: 12px 8px; cursor: pointer; display: flex; align-items: center;
+      font-size: 13px; font-weight: 600; padding: 14px 8px; cursor: pointer; display: flex; align-items: center;
       justify-content: center; gap: 5px; margin-bottom: -1px; transition: 0.15s;
     }
     .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
-    .badge { background: var(--surface2); color: var(--muted); border-radius: 12px; padding: 1px 6px; font-size: 10px; font-weight: 700; }
+    .badge { background: var(--surface2); color: var(--muted); border-radius: 12px; padding: 2px 6px; font-size: 10px; font-weight: 700; }
     .tab.active .badge { background: var(--blue-dim); color: var(--blue); }
     .panel { display: none; }
     .panel.active { display: block; }
 
-    /* ── VỊ THẾ MỞ ── */
+    /* Vị thế mở */
     .position-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 14px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
     .pos-header {
       display: flex; justify-content: space-between; align-items: flex-start;
@@ -80,7 +76,7 @@
     .pos-symbol { font-size: 18px; font-weight: 700; color: var(--text); }
     .pos-badges { display: flex; gap: 6px; flex-wrap: wrap; }
     .tag {
-      padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px;
+      padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 4px;
       font-family: var(--font);
     }
     .tag-long { background: var(--up-dim); color: var(--up); }
@@ -89,26 +85,22 @@
     .tag-leverage { background: #F0F0F5; color: #555; }
     .pos-right { text-align: right; }
     .pnl-label {
-      font-size: 11px; color: var(--muted); text-decoration: underline; text-decoration-style: dashed;
+      font-size: 12px; color: var(--muted); text-decoration: underline; text-decoration-style: dashed;
       display: flex; align-items: center; justify-content: flex-end; gap: 4px;
     }
     .pnl-value { font-family: var(--mono); font-size: 22px; font-weight: 700; margin-top: 4px; }
 
     .pos-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px 8px;
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px 8px;
     }
-    .grid-cell {
-      display: flex; flex-direction: column; gap: 4px;
-    }
+    .grid-cell { display: flex; flex-direction: column; gap: 4px; }
     .grid-cell:nth-child(3n) { text-align: right; }
     .grid-lbl { font-size: 11px; color: var(--muted); }
-    .grid-val { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text); }
-    .liquidation-price { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--dn); }
+    .grid-val { font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--text); }
+    .liquidation-price { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--dn); }
     .liquidation-price span { font-size: 10px; color: var(--muted); font-weight: 400; }
 
-    /* ── TABLE (LỆNH CHỜ) ── */
+    /* Table (lệnh chờ) */
     table { width: 100%; border-collapse: collapse; }
     th { font-size: 10px; font-weight: 600; color: var(--muted); padding: 10px 12px; text-align: left; text-transform: uppercase; border-bottom: 1px solid var(--border); background: var(--surface2); }
     th:not(:first-child) { text-align: right; }
@@ -121,32 +113,33 @@
     .up { color: var(--up) !important; }
     .dn { color: var(--dn) !important; }
     .empty { text-align: center; padding: 32px 16px; color: var(--muted); font-size: 13px; }
+
     nav {
-      position: fixed; bottom: 0; left: 0; width: 100%; height: calc(62px + var(--safe-b));
+      position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-b));
       background: var(--surface); border-top: 1px solid var(--border); display: flex; padding-bottom: var(--safe-b);
       z-index: 900; box-shadow: 0 -2px 8px rgba(0,0,0,0.02);
     }
     .nav-tab {
       flex: 1; background: none; border: none; color: var(--muted); display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 3px; font-size: 9px; font-weight: 700; cursor: pointer;
+      align-items: center; justify-content: center; gap: 3px; font-size: 10px; font-weight: 700; cursor: pointer;
       transition: 0.15s; text-transform: uppercase; letter-spacing: 0.5px;
     }
     .nav-tab.active { color: var(--blue); }
-    .nav-icon { font-size: 18px; }
+    .nav-icon { font-size: 20px; }
 
     /* Calendar */
     .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
     .cal-nav { display: flex; align-items: center; gap: 10px; }
     .cal-nav-btn {
-      background: var(--surface2); border: 1px solid var(--border); color: var(--text); width: 30px; height: 30px;
-      border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;
+      background: var(--surface2); border: 1px solid var(--border); color: var(--text); width: 34px; height: 34px;
+      border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px;
     }
-    .cal-month { font-weight: 700; font-size: 15px; min-width: 110px; text-align: center; }
+    .cal-month { font-weight: 700; font-size: 16px; min-width: 120px; text-align: center; }
     .cal-dow { display: grid; grid-template-columns: repeat(7,1fr); text-align: center; margin-bottom: 6px; }
-    .dow { font-size: 10px; font-weight: 700; color: var(--muted); }
+    .dow { font-size: 11px; font-weight: 700; color: var(--muted); }
     .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
     .cell {
-      background: var(--surface2); border-radius: 8px; min-height: 70px; padding: 8px 4px;
+      background: var(--surface2); border-radius: 8px; min-height: 68px; padding: 8px 4px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       cursor: pointer; border: 1px solid transparent; transition: 0.15s; text-align: center;
     }
@@ -156,27 +149,27 @@
     .cell-profit { font-family: var(--mono); font-size: 15px; font-weight: 700; }
 
     /* Thu nhập */
-    .filter-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .filter-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
     .net-flow-card {
       background: var(--surface); border: 1px solid var(--blue); border-radius: var(--radius);
-      padding: 12px 18px; margin-left: 50px; margin-bottom: 14px; display: inline-flex;
+      padding: 12px 18px; margin-left: 0; margin-bottom: 14px; display: inline-flex;
       align-items: center; gap: 16px; box-shadow: 0 2px 8px rgba(22,93,255,0.06);
     }
-    .net-flow-amount { font-family: var(--mono); font-size: 22px; font-weight: 700; }
+    .net-flow-amount { font-family: var(--mono); font-size: 24px; font-weight: 700; }
     .inc-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
     .inc-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
-    .inc-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .inc-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
     .inc-value { font-family: var(--mono); font-size: 20px; font-weight: 700; }
     .inc-sub { font-size: 10px; color: var(--muted); }
     .month-input {
-      background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 7px 10px;
-      border-radius: 8px; font-size: 13px; outline: none; font-family: var(--font);
+      background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 8px 12px;
+      border-radius: 8px; font-size: 14px; outline: none; font-family: var(--font); min-width: 120px;
     }
     /* Popup năm */
     .year-popup {
       position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px;
       background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 14px; z-index: 110; display: none; width: 300px; box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+      padding: 14px; z-index: 110; display: none; width: 280px; box-shadow: 0 10px 28px rgba(0,0,0,0.08);
     }
     .year-popup.show { display: block; }
     .year-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -189,616 +182,621 @@
     .year-cell .month-net { font-family: var(--mono); font-weight: 700; margin-top: 6px; font-size: 13px; }
     .popup-backdrop { position: fixed; inset: 0; z-index: 109; display: none; }
     .popup-backdrop.show { display: block; }
-    /* Settings & Popup */
+    /* Settings */
     .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: 0.3s; }
     .settings-overlay.open { opacity: 1; pointer-events: auto; }
     .settings-sheet { background: var(--surface); border-radius: 22px 22px 0 0; width: 100%; max-height: 90vh; overflow-y: auto; padding: 22px 18px calc(22px + var(--safe-b)); display: flex; flex-direction: column; gap: 14px; transform: translateY(100%); transition: 0.28s ease; border-top: 1px solid var(--border); }
     .settings-overlay.open .settings-sheet { transform: translateY(0); }
     .input-group { display: flex; flex-direction: column; gap: 6px; }
-    .input-group label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
-    .input-field { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px 14px; border-radius: 10px; font-size: 14px; width: 100%; }
-    .btn { background: var(--blue); color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; width: 100%; }
+    .input-group label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
+    .input-field { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 14px 16px; border-radius: 10px; font-size: 15px; width: 100%; }
+    .btn { background: var(--blue); color: #fff; border: none; padding: 16px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; }
     .btn.danger { background: var(--dn-dim); color: var(--dn); border: 1px solid var(--dn); }
     #toasts { position: fixed; top: 14px; left: 14px; right: 14px; display: flex; flex-direction: column; gap: 7px; z-index: 9999; pointer-events: none; }
-    .toast { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 11px 14px; font-size: 12px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.06); animation: slideDown 0.25s ease; pointer-events: auto; }
+    .toast { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 12px 16px; font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.06); animation: slideDown 0.25s ease; pointer-events: auto; }
     @keyframes slideDown { from{transform:translateY(-16px);opacity:0} to{opacity:1;transform:none} }
     .popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: 0.3s; }
     .popup-overlay.open { opacity: 1; pointer-events: auto; }
     .popup-sheet { background: var(--surface); border-radius: 22px 22px 0 0; width: 100%; max-height: 85vh; overflow-y: auto; padding: 20px 18px calc(20px + var(--safe-b)); transform: translateY(100%); transition: 0.28s ease; border-top: 1px solid var(--border); }
     .popup-overlay.open .popup-sheet { transform: translateY(0); }
     .pop-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .pop-title { font-weight: 700; font-size: 15px; }
+    .pop-title { font-weight: 700; font-size: 16px; }
     .pop-section { margin-bottom: 16px; }
     .pop-section-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
     .trade-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-bottom: 8px; }
-    .trade-details { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin-top: 8px; font-size: 11px; }
+    .trade-details { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin-top: 8px; font-size: 12px; }
     .flow-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
     .flow-item .flow-info { display: flex; flex-direction: column; gap: 2px; }
   </style>
 </head>
 <body>
-<header>
-  <div class="logo"><div class="logo-dot"></div>OKX Pro</div>
-  <div class="hdr-actions">
-    <div class="status">
-      <div class="status-dot" id="statusDot"></div>
-      <span class="status-txt" id="statusTxt">—</span>
+  <!-- Header, app container, screens, popups, settings giữ nguyên như phiên bản cuối -->
+  <!-- ... -->
+  <!-- Code HTML tương tự bản trước, nhưng tôi sẽ đưa toàn bộ phần body vào đây cho đầy đủ. 
+       Vì giới hạn ký tự, tôi sẽ viết gọn lại: dùng lại cấu trúc HTML từ phiên bản cuối cùng (phiên bản có vị thế mở đẹp, calendar to, income, popup, settings). 
+       Tôi sẽ copy nguyên phần HTML đó vào. 
+  -->
+  <!-- Do giới hạn, tôi không chép lại toàn bộ HTML ở đây, nhưng bạn có thể lấy HTML từ câu trả lời ngay trước đó (bản có vị thế mở đẹp) và áp dụng CSS mới này. 
+       Tôi sẽ viết tiếp script bên dưới. 
+  -->
+  <!-- Để đảm bảo đầy đủ, tôi sẽ chèn toàn bộ HTML từ bản cuối cùng. -->
+  <header>
+    <div class="logo"><div class="logo-dot"></div>OKX Pro</div>
+    <div class="hdr-actions">
+      <div class="status">
+        <div class="status-dot" id="statusDot"></div>
+        <span class="status-txt" id="statusTxt">—</span>
+      </div>
+      <button class="btn-icon" id="btnSync" title="Đồng bộ">↻</button>
+      <button class="btn-icon" id="btnSettings" title="Cài đặt">⚙</button>
     </div>
-    <button class="btn-icon" id="btnSync" title="Đồng bộ">↻</button>
-    <button class="btn-icon" id="btnSettings" title="Cài đặt">⚙</button>
-  </div>
-</header>
+  </header>
 
-<div class="app">
-  <!-- TAB 0: Tổng quan -->
-  <section class="screen active" id="screenOverview">
-    <div class="card card-pad">
-      <div class="flex-row">
+  <div class="app">
+    <!-- TAB 0: Tổng quan -->
+    <section class="screen active" id="screenOverview">
+      <div class="card card-pad">
+        <div class="flex-row">
+          <div>
+            <div style="font-size:12px; color:var(--muted); text-transform:uppercase;">Tổng tài sản</div>
+            <div style="font-family:var(--mono); font-size:34px; font-weight:700;" id="totalBal">0.00</div>
+          </div>
+          <div class="ccy-switch">
+            <button class="ccy-btn active" data-ccy="USDT">USDT</button>
+            <button class="ccy-btn" data-ccy="VND">VND</button>
+            <button class="ccy-btn" data-ccy="TWD">TWD</button>
+          </div>
+        </div>
+        <div class="bal-grid">
+          <div class="bal-cell"><div class="bal-lbl">Khả dụng</div><div class="bal-val" id="availBal">0.00</div></div>
+          <div class="bal-cell"><div class="bal-lbl">Lãi/Lỗ tạm</div><div class="bal-val" id="unrealPnL">0.00</div></div>
+          <div class="bal-cell"><div class="bal-lbl">Ký quỹ</div><div class="bal-val" id="margin">0.00</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tabs">
+          <button class="tab active" data-panel="positionsPanel">Vị thế <span class="badge" id="posCount">0</span></button>
+          <button class="tab" data-panel="ordersPanel">Lệnh chờ <span class="badge" id="ordCount">0</span></button>
+        </div>
+        <div class="panel active" id="positionsPanel">
+          <div id="posContainer" style="padding: 8px;"><div class="empty">Không có vị thế mở</div></div>
+        </div>
+        <div class="panel" id="ordersPanel" style="overflow-x:auto;">
+          <table><thead><tr><th>Coin</th><th>Loại</th><th>Giá đặt</th><th>SL</th><th>Trạng thái</th></tr></thead><tbody id="ordBody"><tr><td colspan="5" class="empty">Không có lệnh chờ</td></tr></tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 1: Hiệu suất -->
+    <section class="screen" id="screenPerf">
+      <div class="card card-pad">
+        <div class="cal-header">
+          <div class="cal-nav">
+            <button class="cal-nav-btn" id="prevMonth">‹</button>
+            <span class="cal-month" id="monthLabel">—</span>
+            <button class="cal-nav-btn" id="nextMonth">›</button>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:10px; color:var(--muted);">PnL tháng</div>
+            <div style="font-family:var(--mono); font-size:20px; font-weight:700;" id="monthlyPnL">0.00</div>
+          </div>
+        </div>
+        <div class="cal-dow"><div class="dow">CN</div><div class="dow">T2</div><div class="dow">T3</div><div class="dow">T4</div><div class="dow">T5</div><div class="dow">T6</div><div class="dow">T7</div></div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Thu nhập -->
+    <section class="screen" id="screenIncome">
+      <div class="filter-bar">
+        <span style="font-weight:700; font-size:15px;">📅 Lọc giao dịch</span>
+        <div style="display:flex; gap:8px; align-items:center; position:relative;">
+          <input type="month" id="txMonth" class="month-input" style="width:auto;">
+          <input type="number" id="txYear" class="month-input" placeholder="Năm" min="2020" max="2099" style="width:90px;" autocomplete="off">
+          <div id="yearPopup" class="year-popup"><div class="year-grid" id="yearGridContent"></div></div>
+          <div id="popupBackdrop" class="popup-backdrop"></div>
+        </div>
+      </div>
+
+      <div class="net-flow-card">
         <div>
-          <div style="font-size:12px; color:var(--muted); text-transform:uppercase;">Tổng tài sản</div>
-          <div style="font-family:var(--mono); font-size:34px; font-weight:700;" id="totalBal">0.00</div>
-        </div>
-        <div class="ccy-switch">
-          <button class="ccy-btn active" data-ccy="USDT">USDT</button>
-          <button class="ccy-btn" data-ccy="VND">VND</button>
-          <button class="ccy-btn" data-ccy="TWD">TWD</button>
+          <div class="inc-label" style="color:var(--blue);">Dòng tiền ròng</div>
+          <div class="net-flow-amount" id="incNet">0.00</div>
+          <div class="inc-sub" id="incNetSub">0 lần rút, 0 lần nạp</div>
         </div>
       </div>
-      <div class="bal-grid">
-        <div class="bal-cell"><div class="bal-lbl">Khả dụng</div><div class="bal-val" id="availBal">0.00</div></div>
-        <div class="bal-cell"><div class="bal-lbl">Lãi/Lỗ tạm</div><div class="bal-val" id="unrealPnL">0.00</div></div>
-        <div class="bal-cell"><div class="bal-lbl">Ký quỹ</div><div class="bal-val" id="margin">0.00</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="tabs">
-        <button class="tab active" data-panel="positionsPanel">Vị thế <span class="badge" id="posCount">0</span></button>
-        <button class="tab" data-panel="ordersPanel">Lệnh chờ <span class="badge" id="ordCount">0</span></button>
-      </div>
-      <div class="panel active" id="positionsPanel">
-        <div id="posContainer" style="padding: 8px;"><div class="empty">Không có vị thế mở</div></div>
-      </div>
-      <div class="panel" id="ordersPanel" style="overflow-x:auto;">
-        <table><thead><tr><th>Coin</th><th>Loại</th><th>Giá đặt</th><th>SL</th><th>Trạng thái</th></tr></thead><tbody id="ordBody"><tr><td colspan="5" class="empty">Không có lệnh chờ</td></tr></tbody></table>
-      </div>
-    </div>
-  </section>
 
-  <!-- TAB 1: Hiệu suất -->
-  <section class="screen" id="screenPerf">
-    <div class="card card-pad">
-      <div class="cal-header">
-        <div class="cal-nav">
-          <button class="cal-nav-btn" id="prevMonth">‹</button>
-          <span class="cal-month" id="monthLabel">—</span>
-          <button class="cal-nav-btn" id="nextMonth">›</button>
+      <div class="inc-cards">
+        <div class="inc-card" style="border-left: 4px solid var(--up);">
+          <div class="inc-label">💵 Tổng rút</div>
+          <div class="inc-value up" id="incWd">0.00</div>
+          <div class="inc-sub" id="incWdCnt">0 lần</div>
         </div>
-        <div style="text-align:right;">
-          <div style="font-size:10px; color:var(--muted);">PnL tháng</div>
-          <div style="font-family:var(--mono); font-size:20px; font-weight:700;" id="monthlyPnL">0.00</div>
+        <div class="inc-card" style="border-left: 4px solid var(--dn);">
+          <div class="inc-label">💸 Tổng nạp</div>
+          <div class="inc-value dn" id="incDep">0.00</div>
+          <div class="inc-sub" id="incDepCnt">0 lần</div>
         </div>
       </div>
-      <div class="cal-dow"><div class="dow">CN</div><div class="dow">T2</div><div class="dow">T3</div><div class="dow">T4</div><div class="dow">T5</div><div class="dow">T6</div><div class="dow">T7</div></div>
-      <div class="cal-grid" id="calGrid"></div>
-    </div>
-  </section>
 
-  <!-- TAB 2: Thu nhập -->
-  <section class="screen" id="screenIncome">
-    <div class="filter-bar">
-      <span style="font-weight:700; font-size:15px;">📅 Lọc giao dịch</span>
-      <div style="display:flex; gap:8px; align-items:center; position:relative;">
-        <input type="month" id="txMonth" class="month-input" style="width:auto;">
-        <input type="number" id="txYear" class="month-input" placeholder="Năm" min="2020" max="2099" style="width:90px;" autocomplete="off">
-        <div id="yearPopup" class="year-popup"><div class="year-grid" id="yearGridContent"></div></div>
-        <div id="popupBackdrop" class="popup-backdrop"></div>
+      <div class="card">
+        <div class="flex-row card-pad" style="border-bottom:1px solid var(--border);">
+          <span style="font-weight:700;">Lịch sử nạp/rút</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th>Ngày</th><th>Loại</th><th>Số tiền</th><th>Phí</th><th>Trạng thái</th></tr></thead>
+            <tbody id="txBody"><tr><td colspan="5" class="empty">Chưa có dữ liệu</td></tr></tbody>
+          </table>
+        </div>
       </div>
-    </div>
-
-    <div class="net-flow-card">
-      <div>
-        <div class="inc-label" style="color:var(--blue);">Dòng tiền ròng</div>
-        <div class="net-flow-amount" id="incNet">0.00</div>
-        <div class="inc-sub" id="incNetSub">0 lần rút, 0 lần nạp</div>
-      </div>
-    </div>
-
-    <div class="inc-cards">
-      <div class="inc-card" style="border-left: 4px solid var(--up);">
-        <div class="inc-label">💵 Tổng rút</div>
-        <div class="inc-value up" id="incWd">0.00</div>
-        <div class="inc-sub" id="incWdCnt">0 lần</div>
-      </div>
-      <div class="inc-card" style="border-left: 4px solid var(--dn);">
-        <div class="inc-label">💸 Tổng nạp</div>
-        <div class="inc-value dn" id="incDep">0.00</div>
-        <div class="inc-sub" id="incDepCnt">0 lần</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="flex-row card-pad" style="border-bottom:1px solid var(--border);">
-        <span style="font-weight:700;">Lịch sử nạp/rút</span>
-      </div>
-      <div style="overflow-x:auto;">
-        <table>
-          <thead><tr><th>Ngày</th><th>Loại</th><th>Số tiền</th><th>Phí</th><th>Trạng thái</th></tr></thead>
-          <tbody id="txBody"><tr><td colspan="5" class="empty">Chưa có dữ liệu</td></tr></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-</div>
-
-<nav>
-  <button class="nav-tab active" data-screen="screenOverview"><span class="nav-icon">◒</span><span>Tổng quan</span></button>
-  <button class="nav-tab" data-screen="screenPerf"><span class="nav-icon">⬟</span><span>Hiệu suất</span></button>
-  <button class="nav-tab" data-screen="screenIncome"><span class="nav-icon">◎</span><span>Thu nhập</span></button>
-</nav>
-
-<!-- Popup chi tiết ngày -->
-<div class="popup-overlay" id="popupOverlay">
-  <div class="popup-sheet" id="popupContent"></div>
-</div>
-
-<!-- Settings -->
-<div class="settings-overlay" id="settingsOverlay">
-  <div class="settings-sheet">
-    <div class="flex-row"><span style="font-weight:700; font-size:18px;">Cài đặt API</span><button class="btn-icon" id="closeSettings">✕</button></div>
-    <div class="input-group"><label>OKX API Key</label><input type="text" id="apiKeyInput" class="input-field" placeholder="API Key"></div>
-    <div class="input-group"><label>Secret Key</label><input type="password" id="secretInput" class="input-field" placeholder="Secret Key"></div>
-    <div class="input-group"><label>Passphrase</label><input type="password" id="passphraseInput" class="input-field" placeholder="Passphrase"></div>
-    <div class="input-group"><label>CORS Proxy</label><input type="text" id="proxyInput" class="input-field" placeholder="https://cors-bridge.xyz/"></div>
-    <button class="btn" id="saveSettings">Lưu & Đồng bộ</button>
-    <button class="btn danger" id="wipeData">Xoá dữ liệu cục bộ</button>
+    </section>
   </div>
-</div>
 
-<div id="toasts"></div>
+  <nav>
+    <button class="nav-tab active" data-screen="screenOverview"><span class="nav-icon">◒</span><span>Tổng quan</span></button>
+    <button class="nav-tab" data-screen="screenPerf"><span class="nav-icon">⬟</span><span>Hiệu suất</span></button>
+    <button class="nav-tab" data-screen="screenIncome"><span class="nav-icon">◎</span><span>Thu nhập</span></button>
+  </nav>
 
-<script>
-(() => {
-  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyq8wK1niHSZvflJJrx0sbzgdfFlY6grY--zlJ-2IQ9KeYvz6yh5OXz9WQ9GKS3du6z/exec';
-  const FX = { USDT: 1, VND: 25450, TWD: 32.1 };
-  const CCY_SUFFIX = { USDT: ' USDT', VND: ' ₫', TWD: ' NT$' };
-  const CCY_DEC = { USDT: 2, VND: 0, TWD: 1 };
+  <!-- Popup chi tiết ngày -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-sheet" id="popupContent"></div>
+  </div>
 
-  const S = {
-    api: { key: '', secret: '', pass: '', proxy: '' },
-    ccy: 'USDT',
-    bal: { total: 0, avail: 0, upl: 0, margin: 0 },
-    positions: [], orders: [],
-    history: [], deps: [], wds: [],
-    pnlMap: {}, flowMap: {},
-    calY: new Date().getFullYear(), calM: new Date().getMonth()+1
-  };
+  <!-- Settings -->
+  <div class="settings-overlay" id="settingsOverlay">
+    <div class="settings-sheet">
+      <div class="flex-row"><span style="font-weight:700; font-size:18px;">Cài đặt API</span><button class="btn-icon" id="closeSettings">✕</button></div>
+      <div class="input-group"><label>OKX API Key</label><input type="text" id="apiKeyInput" class="input-field" placeholder="API Key"></div>
+      <div class="input-group"><label>Secret Key</label><input type="password" id="secretInput" class="input-field" placeholder="Secret Key"></div>
+      <div class="input-group"><label>Passphrase</label><input type="password" id="passphraseInput" class="input-field" placeholder="Passphrase"></div>
+      <div class="input-group"><label>CORS Proxy</label><input type="text" id="proxyInput" class="input-field" placeholder="https://cors-bridge.xyz/"></div>
+      <button class="btn" id="saveSettings">Lưu & Đồng bộ</button>
+      <button class="btn danger" id="wipeData">Xoá dữ liệu cục bộ</button>
+    </div>
+  </div>
 
-  const $ = id => document.getElementById(id);
-  const qs = sel => document.querySelectorAll(sel);
+  <div id="toasts"></div>
 
-  function toast(msg) {
-    const el = document.createElement('div');
-    el.className = 'toast';
-    el.innerHTML = `<span>${msg}</span><button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;" onclick="this.parentElement.remove()">✕</button>`;
-    $('toasts').prepend(el);
-    setTimeout(() => el.remove(), 3000);
-  }
+  <script>
+    (() => {
+      const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyq8wK1niHSZvflJJrx0sbzgdfFlY6grY--zlJ-2IQ9KeYvz6yh5OXz9WQ9GKS3du6z/exec';
+      const FX = { USDT: 1, VND: 25450, TWD: 32.1 };
+      const CCY_SUFFIX = { USDT: ' USDT', VND: ' ₫', TWD: ' NT$' };
+      const CCY_DEC = { USDT: 2, VND: 0, TWD: 1 };
 
-  function setStatus(state, text) {
-    const dot = $('statusDot');
-    dot.className = 'status-dot ' + (state === 'live' ? 'live' : state === 'busy' ? 'busy' : '');
-    $('statusTxt').textContent = text || (state === 'live' ? 'Live' : state === 'busy' ? 'Đồng bộ...' : 'Off');
-  }
+      const S = {
+        api: { key: '', secret: '', pass: '', proxy: '' },
+        ccy: 'USDT',
+        bal: { total: 0, avail: 0, upl: 0, margin: 0 },
+        positions: [], orders: [],
+        history: [], deps: [], wds: [],
+        pnlMap: {}, flowMap: {},
+        calY: new Date().getFullYear(), calM: new Date().getMonth()+1
+      };
 
-  function save() { try { localStorage.setItem('okx_v5', JSON.stringify({ api: S.api, ccy: S.ccy })); } catch(e) {} }
-  function load() {
-    try {
-      const d = JSON.parse(localStorage.getItem('okx_v5')||'{}');
-      if (d.api) Object.assign(S.api, d.api);
-      if (d.ccy) S.ccy = d.ccy;
-    } catch(e) {}
-  }
+      const $ = id => document.getElementById(id);
+      const qs = sel => document.querySelectorAll(sel);
 
-  // Định dạng số nguyên cho VND, TWD
-  function fmtInt(usd) {
-    const v = usd * (FX[S.ccy] || 1);
-    return Math.round(v).toLocaleString('vi-VN');
-  }
-
-  // Định dạng số có 2 chữ số thập phân cho USDT
-  function fmtDec(usd) {
-    const v = usd * (FX[S.ccy] || 1);
-    return v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  }
-
-  // Định dạng số dựa trên loại tiền tệ
-  function fmtNum(usd) {
-    if (S.ccy === 'VND' || S.ccy === 'TWD') return fmtInt(usd);
-    return fmtDec(usd);
-  }
-
-  function fmtVal(usd) { return fmtNum(usd) + CCY_SUFFIX[S.ccy]; }
-  function fmtPnL(usd) { const sign = usd >= 0 ? '+' : '−'; return sign + fmtNum(Math.abs(usd)) + CCY_SUFFIX[S.ccy]; }
-  function pc(v) { return v >= 0 ? 'up' : 'dn'; }
-  function toDay(ts) { return new Date(ts).toISOString().slice(0,10); }
-  function parseTime(val) {
-    if (!val) return 0;
-    if (typeof val === 'number') return val;
-    const d = new Date(val);
-    if (!isNaN(d.getTime())) return d.getTime();
-    const n = parseInt(val);
-    if (!isNaN(n) && n > 1e10) return n;
-    return 0;
-  }
-
-  async function okxReq(method, path, body='') {
-    const { key, secret, pass, proxy } = S.api;
-    if (!key || !secret || !pass) throw new Error('Thiếu cấu hình API');
-    const ts = new Date().toISOString();
-    const pre = ts + method.toUpperCase() + path + body;
-    const sig = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(pre, secret));
-    const res = await fetch((proxy || 'https://www.okx.com') + path, {
-      method: method.toUpperCase(),
-      headers: {
-        'OK-ACCESS-KEY': key, 'OK-ACCESS-SIGN': sig,
-        'OK-ACCESS-TIMESTAMP': ts, 'OK-ACCESS-PASSPHRASE': pass,
-        'Content-Type': 'application/json'
-      },
-      body: body || undefined
-    });
-    const json = await res.json();
-    if (json.code !== '0') throw new Error(json.msg || 'OKX API error');
-    return json.data || [];
-  }
-
-  async function syncOverview() {
-    if (!S.api.key) { setStatus('off', 'No API'); return; }
-    setStatus('busy');
-    try {
-      const balD = await okxReq('GET', '/api/v5/account/balance');
-      if (balD?.length) {
-        S.bal.total = parseFloat(balD[0].totalEq) || 0;
-        const u = balD[0].details?.find(x => x.ccy === 'USDT');
-        S.bal.avail = u ? parseFloat(u.availBal) || 0 : 0;
-        S.bal.margin = u ? parseFloat(u.frozenBal) || 0 : 0;
+      function toast(msg) {
+        const el = document.createElement('div');
+        el.className = 'toast';
+        el.innerHTML = `<span>${msg}</span><button style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;" onclick="this.parentElement.remove()">✕</button>`;
+        $('toasts').prepend(el);
+        setTimeout(() => el.remove(), 3000);
       }
-      const posD = await okxReq('GET', '/api/v5/account/positions?instType=SWAP');
-      S.positions = posD || [];
-      S.bal.upl = S.positions.reduce((s, p) => s + (parseFloat(p.upl) || 0), 0);
-      let ords = [];
-      for (const inst of ['SPOT','MARGIN','SWAP','FUTURES','OPTION']) {
-        try { const r = await okxReq('GET', `/api/v5/trade/orders-pending?instType=${inst}&limit=100`); if (r) ords = ords.concat(r); } catch(e) {}
+
+      function setStatus(state, text) {
+        const dot = $('statusDot');
+        dot.className = 'status-dot ' + (state === 'live' ? 'live' : state === 'busy' ? 'busy' : '');
+        $('statusTxt').textContent = text || (state === 'live' ? 'Live' : state === 'busy' ? 'Đồng bộ...' : 'Off');
       }
-      S.orders = ords;
-      renderOverview();
-      setStatus('live', 'Live');
-    } catch(e) { setStatus('off', 'Error'); toast('Lỗi đồng bộ: ' + e.message); }
-  }
 
-  async function loadSheetData() {
-    try {
-      const res = await fetch(SHEET_URL);
-      const json = await res.json();
-      S.history = (json.History || []).map(h => ({
-        posId: h.posId, instId: h.instId, posSide: h.posSide,
-        realizedPnl: parseFloat(h.realizedPnl)||0,
-        fee: parseFloat(h.fee)||0, fundingFee: parseFloat(h.fundingFee)||0,
-        openAvgPx: parseFloat(h.openAvgPx)||0, closeAvgPx: parseFloat(h.closeAvgPx)||0,
-        closeTotalPos: parseFloat(h.closeTotalPos)||0, lever: h.lever,
-        uTime: parseTime(h.uTime), cTime: parseTime(h.cTime)
-      }));
-      S.deps = (json.Deposits || []).map(d => ({
-        id: d.depId, ccy: d.ccy || 'USDT', amt: parseFloat(d.amt)||0,
-        cTime: parseTime(d.cTime), state: d.state, txId: d.txId || ''
-      }));
-      S.wds = (json.Withdrawals || []).map(w => ({
-        id: w.wdId, ccy: w.ccy || 'USDT', amt: parseFloat(w.amt)||0,
-        fee: parseFloat(w.fee)||0, cTime: parseTime(w.cTime),
-        state: w.state, txId: w.txId || ''
-      }));
-      rebuildMaps();
-      renderCalendar();
-      renderIncome();
-      toast('Dữ liệu lịch sử đã cập nhật');
-    } catch(e) { console.error(e); }
-  }
+      function save() { try { localStorage.setItem('okx_v5_mob', JSON.stringify({ api: S.api, ccy: S.ccy })); } catch(e) {} }
+      function load() {
+        try {
+          const d = JSON.parse(localStorage.getItem('okx_v5_mob')||'{}');
+          if (d.api) Object.assign(S.api, d.api);
+          if (d.ccy) S.ccy = d.ccy;
+        } catch(e) {}
+      }
 
-  function rebuildMaps() {
-    S.pnlMap = {};
-    S.history.forEach(h => { if (h.uTime) S.pnlMap[toDay(h.uTime)] = (S.pnlMap[toDay(h.uTime)]||0) + h.realizedPnl; });
-    S.flowMap = {};
-    S.deps.forEach(d => { if (d.cTime) S.flowMap[toDay(d.cTime)] = (S.flowMap[toDay(d.cTime)]||0) + d.amt; });
-    S.wds.forEach(w => { if (w.cTime) S.flowMap[toDay(w.cTime)] = (S.flowMap[toDay(w.cTime)]||0) - w.amt; });
-  }
+      function fmtInt(usd) {
+        const v = usd * (FX[S.ccy] || 1);
+        return Math.round(v).toLocaleString('vi-VN');
+      }
 
-  function renderOverview() {
-    $('totalBal').textContent = fmtVal(S.bal.total);
-    $('availBal').textContent = fmtVal(S.bal.avail);
-    $('unrealPnL').textContent = fmtPnL(S.bal.upl);
-    $('unrealPnL').className = 'bal-val ' + pc(S.bal.upl);
-    $('margin').textContent = fmtVal(S.bal.margin);
-    $('posCount').textContent = S.positions.length;
-    $('ordCount').textContent = S.orders.length;
+      function fmtDec(usd) {
+        const v = usd * (FX[S.ccy] || 1);
+        return v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      }
 
-    // Render vị thế mở
-    const posContainer = $('posContainer');
-    if (!S.positions.length) {
-      posContainer.innerHTML = '<div class="empty">Không có vị thế mở</div>';
-    } else {
-      posContainer.innerHTML = S.positions.map(p => {
-        const symbol = (p.instId || '').replace(/-USDT-SWAP|-SWAP/, '');
-        const side = p.posSide === 'long' ? 'long' : 'short';
-        const sideLabel = p.posSide === 'long' ? 'Mua' : 'Bán';
-        const marginMode = p.mgnMode || 'Cô lập';
-        const leverage = p.lever || '1';
-        const pnl = parseFloat(p.upl) || 0;
-        const volume = p.pos || '—';
-        const margin = parseFloat(p.margin) || 0;
-        const maintenanceMargin = parseFloat(p.mm) || 0;
-        const entryPrice = parseFloat(p.avgPx) || 0;
-        const markPrice = parseFloat(p.markPx) || 0;
-        const liquidationPrice = parseFloat(p.liqPx) || 0;
+      function fmtNum(usd) {
+        if (S.ccy === 'VND' || S.ccy === 'TWD') return fmtInt(usd);
+        return fmtDec(usd);
+      }
 
-        return `<div class="position-card">
-          <div class="pos-header">
-            <div class="pos-left">
-              <div class="pos-symbol">${symbol}</div>
-              <div class="pos-badges">
-                <span class="tag ${side === 'long' ? 'tag-long' : 'tag-short'}">${sideLabel}</span>
-                <span class="tag tag-margin">${marginMode}</span>
-                <span class="tag tag-leverage">
-                  <span>${leverage}x</span>
-                  <span style="font-size:10px;">✎</span>
-                  <span style="font-size:12px;">⋮</span>
-                </span>
+      function fmtVal(usd) { return fmtNum(usd) + CCY_SUFFIX[S.ccy]; }
+      function fmtPnL(usd) { const sign = usd >= 0 ? '+' : '−'; return sign + fmtNum(Math.abs(usd)) + CCY_SUFFIX[S.ccy]; }
+      function pc(v) { return v >= 0 ? 'up' : 'dn'; }
+      function toDay(ts) { return new Date(ts).toISOString().slice(0,10); }
+      function parseTime(val) {
+        if (!val) return 0;
+        if (typeof val === 'number') return val;
+        const d = new Date(val);
+        if (!isNaN(d.getTime())) return d.getTime();
+        const n = parseInt(val);
+        if (!isNaN(n) && n > 1e10) return n;
+        return 0;
+      }
+
+      async function okxReq(method, path, body='') {
+        const { key, secret, pass, proxy } = S.api;
+        if (!key || !secret || !pass) throw new Error('Thiếu cấu hình API');
+        const ts = new Date().toISOString();
+        const pre = ts + method.toUpperCase() + path + body;
+        const sig = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(pre, secret));
+        const res = await fetch((proxy || 'https://www.okx.com') + path, {
+          method: method.toUpperCase(),
+          headers: {
+            'OK-ACCESS-KEY': key, 'OK-ACCESS-SIGN': sig,
+            'OK-ACCESS-TIMESTAMP': ts, 'OK-ACCESS-PASSPHRASE': pass,
+            'Content-Type': 'application/json'
+          },
+          body: body || undefined
+        });
+        const json = await res.json();
+        if (json.code !== '0') throw new Error(json.msg || 'OKX API error');
+        return json.data || [];
+      }
+
+      async function syncOverview() {
+        if (!S.api.key) { setStatus('off', 'No API'); return; }
+        setStatus('busy');
+        try {
+          const balD = await okxReq('GET', '/api/v5/account/balance');
+          if (balD?.length) {
+            S.bal.total = parseFloat(balD[0].totalEq) || 0;
+            const u = balD[0].details?.find(x => x.ccy === 'USDT');
+            S.bal.avail = u ? parseFloat(u.availBal) || 0 : 0;
+            S.bal.margin = u ? parseFloat(u.frozenBal) || 0 : 0;
+          }
+          const posD = await okxReq('GET', '/api/v5/account/positions?instType=SWAP');
+          S.positions = posD || [];
+          S.bal.upl = S.positions.reduce((s, p) => s + (parseFloat(p.upl) || 0), 0);
+          let ords = [];
+          for (const inst of ['SPOT','MARGIN','SWAP','FUTURES','OPTION']) {
+            try { const r = await okxReq('GET', `/api/v5/trade/orders-pending?instType=${inst}&limit=100`); if (r) ords = ords.concat(r); } catch(e) {}
+          }
+          S.orders = ords;
+          renderOverview();
+          setStatus('live', 'Live');
+        } catch(e) { setStatus('off', 'Error'); toast('Lỗi đồng bộ: ' + e.message); }
+      }
+
+      async function loadSheetData() {
+        try {
+          const res = await fetch(SHEET_URL);
+          const json = await res.json();
+          S.history = (json.History || []).map(h => ({
+            posId: h.posId, instId: h.instId, posSide: h.posSide,
+            realizedPnl: parseFloat(h.realizedPnl)||0,
+            fee: parseFloat(h.fee)||0, fundingFee: parseFloat(h.fundingFee)||0,
+            openAvgPx: parseFloat(h.openAvgPx)||0, closeAvgPx: parseFloat(h.closeAvgPx)||0,
+            closeTotalPos: parseFloat(h.closeTotalPos)||0, lever: h.lever,
+            uTime: parseTime(h.uTime), cTime: parseTime(h.cTime)
+          }));
+          S.deps = (json.Deposits || []).map(d => ({
+            id: d.depId, ccy: d.ccy || 'USDT', amt: parseFloat(d.amt)||0,
+            cTime: parseTime(d.cTime), state: d.state, txId: d.txId || ''
+          }));
+          S.wds = (json.Withdrawals || []).map(w => ({
+            id: w.wdId, ccy: w.ccy || 'USDT', amt: parseFloat(w.amt)||0,
+            fee: parseFloat(w.fee)||0, cTime: parseTime(w.cTime),
+            state: w.state, txId: w.txId || ''
+          }));
+          rebuildMaps();
+          renderCalendar();
+          renderIncome();
+          toast('Dữ liệu lịch sử đã cập nhật');
+        } catch(e) { console.error(e); }
+      }
+
+      function rebuildMaps() {
+        S.pnlMap = {};
+        S.history.forEach(h => { if (h.uTime) S.pnlMap[toDay(h.uTime)] = (S.pnlMap[toDay(h.uTime)]||0) + h.realizedPnl; });
+        S.flowMap = {};
+        S.deps.forEach(d => { if (d.cTime) S.flowMap[toDay(d.cTime)] = (S.flowMap[toDay(d.cTime)]||0) + d.amt; });
+        S.wds.forEach(w => { if (w.cTime) S.flowMap[toDay(w.cTime)] = (S.flowMap[toDay(w.cTime)]||0) - w.amt; });
+      }
+
+      function renderOverview() {
+        $('totalBal').textContent = fmtVal(S.bal.total);
+        $('availBal').textContent = fmtVal(S.bal.avail);
+        $('unrealPnL').textContent = fmtPnL(S.bal.upl);
+        $('unrealPnL').className = 'bal-val ' + pc(S.bal.upl);
+        $('margin').textContent = fmtVal(S.bal.margin);
+        $('posCount').textContent = S.positions.length;
+        $('ordCount').textContent = S.orders.length;
+
+        const posContainer = $('posContainer');
+        if (!S.positions.length) {
+          posContainer.innerHTML = '<div class="empty">Không có vị thế mở</div>';
+        } else {
+          posContainer.innerHTML = S.positions.map(p => {
+            const symbol = (p.instId || '').replace(/-USDT-SWAP|-SWAP/, '');
+            const side = p.posSide === 'long' ? 'long' : 'short';
+            const sideLabel = p.posSide === 'long' ? 'Mua' : 'Bán';
+            const marginMode = p.mgnMode || 'Cô lập';
+            const leverage = p.lever || '1';
+            const pnl = parseFloat(p.upl) || 0;
+            const volume = p.pos || '—';
+            const margin = parseFloat(p.margin) || 0;
+            const maintenanceMargin = parseFloat(p.mm) || 0;
+            const entryPrice = parseFloat(p.avgPx) || 0;
+            const markPrice = parseFloat(p.markPx) || 0;
+            const liquidationPrice = parseFloat(p.liqPx) || 0;
+
+            return `<div class="position-card">
+              <div class="pos-header">
+                <div class="pos-left">
+                  <div class="pos-symbol">${symbol}</div>
+                  <div class="pos-badges">
+                    <span class="tag ${side === 'long' ? 'tag-long' : 'tag-short'}">${sideLabel}</span>
+                    <span class="tag tag-margin">${marginMode}</span>
+                    <span class="tag tag-leverage">
+                      <span>${leverage}x</span>
+                      <span style="font-size:10px;">✎</span>
+                      <span style="font-size:12px;">⋮</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="pos-right">
+                  <div class="pnl-label">
+                    <span>PnL (USDT)</span>
+                    <span style="font-size:14px;">↗</span>
+                  </div>
+                  <div class="pnl-value ${pc(pnl)}">${fmtPnL(pnl)}</div>
+                </div>
               </div>
-            </div>
-            <div class="pos-right">
-              <div class="pnl-label">
-                <span>PnL (USDT)</span>
-                <span style="font-size:14px;">↗</span>
+              <div class="pos-grid">
+                <div class="grid-cell"><div class="grid-lbl">Khối lượng</div><div class="grid-val">${volume}</div></div>
+                <div class="grid-cell"><div class="grid-lbl">Ký quỹ (USDT)</div><div class="grid-val">${fmtNum(margin)}</div></div>
+                <div class="grid-cell"><div class="grid-lbl">Giá vào lệnh</div><div class="grid-val">${fmtNum(entryPrice)}</div></div>
+                <div class="grid-cell"><div class="grid-lbl">Ký quỹ duy trì</div><div class="grid-val">${fmtNum(maintenanceMargin)}</div></div>
+                <div class="grid-cell"><div class="grid-lbl">Giá đánh dấu</div><div class="grid-val">${fmtNum(markPrice)}</div></div>
+                <div class="grid-cell">
+                  <div class="grid-lbl">Giá thanh lý</div>
+                  <div class="liquidation-price">${fmtNum(liquidationPrice)} <span>USDT</span></div>
+                </div>
               </div>
-              <div class="pnl-value ${pc(pnl)}">${fmtPnL(pnl)}</div>
-            </div>
-          </div>
-          <div class="pos-grid">
-            <div class="grid-cell"><div class="grid-lbl">Khối lượng</div><div class="grid-val">${volume}</div></div>
-            <div class="grid-cell"><div class="grid-lbl">Ký quỹ (USDT)</div><div class="grid-val">${fmtNum(margin)}</div></div>
-            <div class="grid-cell"><div class="grid-lbl">Giá vào lệnh</div><div class="grid-val">${fmtNum(entryPrice)}</div></div>
-            <div class="grid-cell"><div class="grid-lbl">Ký quỹ duy trì</div><div class="grid-val">${fmtNum(maintenanceMargin)}</div></div>
-            <div class="grid-cell"><div class="grid-lbl">Giá đánh dấu</div><div class="grid-val">${fmtNum(markPrice)}</div></div>
-            <div class="grid-cell">
-              <div class="grid-lbl">Giá thanh lý</div>
-              <div class="liquidation-price">${fmtNum(liquidationPrice)} <span>USDT</span></div>
-            </div>
-          </div>
-        </div>`;
-      }).join('');
-    }
+            </div>`;
+          }).join('');
+        }
 
-    // Lệnh chờ
-    const ordTb = $('ordBody');
-    if (!S.orders.length) ordTb.innerHTML = '<tr><td colspan="5" class="empty">Không có lệnh chờ</td></tr>';
-    else {
-      ordTb.innerHTML = S.orders.map(o => {
-        const buy = o.side === 'buy';
-        return `<tr>
-          <td><span class="sym">${(o.instId||'').replace(/-USDT-SWAP|-SWAP|-USDT/,'')}</span> <span class="side-badge ${buy?'long':'short'}">${buy?'MUA':'BÁN'}</span></td>
-          <td style="color:var(--muted);font-size:11px">${o.ordType||'—'}</td>
-          <td>${o.px||'MKT'}</td>
-          <td>${o.sz||'—'}</td>
-          <td style="color:var(--warn);font-size:11px">${o.state||'—'}</td>
-        </tr>`;
-      }).join('');
-    }
-  }
+        const ordTb = $('ordBody');
+        if (!S.orders.length) ordTb.innerHTML = '<tr><td colspan="5" class="empty">Không có lệnh chờ</td></tr>';
+        else {
+          ordTb.innerHTML = S.orders.map(o => {
+            const buy = o.side === 'buy';
+            return `<tr>
+              <td><span class="sym">${(o.instId||'').replace(/-USDT-SWAP|-SWAP|-USDT/,'')}</span> <span class="side-badge ${buy?'long':'short'}">${buy?'MUA':'BÁN'}</span></td>
+              <td style="color:var(--muted);font-size:11px">${o.ordType||'—'}</td>
+              <td>${o.px||'MKT'}</td>
+              <td>${o.sz||'—'}</td>
+              <td style="color:var(--warn);font-size:11px">${o.state||'—'}</td>
+            </tr>`;
+          }).join('');
+        }
+      }
 
-  function renderCalendar() {
-    const yr = S.calY, mo = S.calM;
-    const days = new Date(yr, mo, 0).getDate();
-    const first = new Date(yr, mo-1, 1).getDay();
-    const today = toDay(Date.now());
-    $('monthLabel').textContent = `Tháng ${mo}/${yr}`;
-    let html = '<div class="cell empty"></div>'.repeat(first);
-    let mPnl = 0;
-    for (let d=1; d<=days; d++) {
-      const key = `${yr}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      const pnl = S.pnlMap[key]||0;
-      mPnl += pnl;
-      let cls = 'cell';
-      if (key === today) cls += ' today';
-      const pnlColor = pc(pnl);
-      html += `<div class="${cls}" onclick="showDayDetail('${key}')">
-        <div class="cell-day">${d}</div>
-        <div class="cell-profit ${pnlColor}">${pnl!==0 ? (pnl>0?'+':'')+fmtNum(pnl) : ''}</div>
-      </div>`;
-    }
-    $('calGrid').innerHTML = html;
-    const mEl = $('monthlyPnL');
-    mEl.textContent = fmtPnL(mPnl);
-    mEl.className = pc(mPnl);
-  }
+      function renderCalendar() {
+        const yr = S.calY, mo = S.calM;
+        const days = new Date(yr, mo, 0).getDate();
+        const first = new Date(yr, mo-1, 1).getDay();
+        const today = toDay(Date.now());
+        $('monthLabel').textContent = `Tháng ${mo}/${yr}`;
+        let html = '<div class="cell empty"></div>'.repeat(first);
+        let mPnl = 0;
+        for (let d=1; d<=days; d++) {
+          const key = `${yr}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+          const pnl = S.pnlMap[key]||0;
+          mPnl += pnl;
+          let cls = 'cell';
+          if (key === today) cls += ' today';
+          const pnlColor = pc(pnl);
+          html += `<div class="${cls}" onclick="showDayDetail('${key}')">
+            <div class="cell-day">${d}</div>
+            <div class="cell-profit ${pnlColor}">${pnl!==0 ? (pnl>0?'+':'')+fmtNum(pnl) : ''}</div>
+          </div>`;
+        }
+        $('calGrid').innerHTML = html;
+        const mEl = $('monthlyPnL');
+        mEl.textContent = fmtPnL(mPnl);
+        mEl.className = pc(mPnl);
+      }
 
-  window.showDayDetail = function(dateKey) {
-    const trades = S.history.filter(h => h.uTime && toDay(h.uTime) === dateKey);
-    const deps = S.deps.filter(d => d.cTime && toDay(d.cTime) === dateKey);
-    const wds = S.wds.filter(w => w.cTime && toDay(w.cTime) === dateKey);
-    if (!trades.length && !deps.length && !wds.length) return;
-    let html = '';
-    if (trades.length) {
-      html += `<div class="pop-section"><div class="pop-section-title">📊 Vị thế đã đóng (${trades.length})</div>`;
-      trades.forEach(h => {
-        const pnl = h.realizedPnl;
-        const net = pnl + h.fee + h.fundingFee;
-        html += `<div class="trade-item">
-          <div class="flex-row">
-            <span><strong>${h.instId.replace(/-USDT-SWAP|-SWAP/,'')}</strong> <span class="side-badge ${h.posSide==='long'?'long':'short'}">${h.posSide.toUpperCase()}</span> ${h.lever}x</span>
-            <span class="${pc(pnl)}">${fmtPnL(pnl)}</span>
-          </div>
-          <div class="trade-details">
-            <span>Vào: ${h.openAvgPx.toFixed(4)}</span><span>Đóng: ${h.closeAvgPx.toFixed(4)}</span>
-            <span class="dn">Phí: ${fmtVal(Math.abs(h.fee))}</span>
-            <span class="${pc(h.fundingFee)}">Funding: ${fmtPnL(h.fundingFee)}</span>
-            <span class="${pc(net)}" style="grid-column: span 2;"><strong>Net: ${fmtPnL(net)}</strong></span>
-          </div>
-        </div>`;
+      window.showDayDetail = function(dateKey) {
+        const trades = S.history.filter(h => h.uTime && toDay(h.uTime) === dateKey);
+        const deps = S.deps.filter(d => d.cTime && toDay(d.cTime) === dateKey);
+        const wds = S.wds.filter(w => w.cTime && toDay(w.cTime) === dateKey);
+        if (!trades.length && !deps.length && !wds.length) return;
+        let html = '';
+        if (trades.length) {
+          html += `<div class="pop-section"><div class="pop-section-title">📊 Vị thế đã đóng (${trades.length})</div>`;
+          trades.forEach(h => {
+            const pnl = h.realizedPnl;
+            const net = pnl + h.fee + h.fundingFee;
+            html += `<div class="trade-item">
+              <div class="flex-row">
+                <span><strong>${h.instId.replace(/-USDT-SWAP|-SWAP/,'')}</strong> <span class="side-badge ${h.posSide==='long'?'long':'short'}">${h.posSide.toUpperCase()}</span> ${h.lever}x</span>
+                <span class="${pc(pnl)}">${fmtPnL(pnl)}</span>
+              </div>
+              <div class="trade-details">
+                <span>Vào: ${h.openAvgPx.toFixed(4)}</span><span>Đóng: ${h.closeAvgPx.toFixed(4)}</span>
+                <span class="dn">Phí: ${fmtVal(Math.abs(h.fee))}</span>
+                <span class="${pc(h.fundingFee)}">Funding: ${fmtPnL(h.fundingFee)}</span>
+                <span class="${pc(net)}" style="grid-column: span 2;"><strong>Net: ${fmtPnL(net)}</strong></span>
+              </div>
+            </div>`;
+          });
+          html += `</div>`;
+        }
+        if (deps.length) {
+          html += `<div class="pop-section"><div class="pop-section-title">💸 Nạp tiền (${deps.length})</div>`;
+          deps.forEach(d => {
+            html += `<div class="flow-item">
+              <div class="flow-info"><span><strong>${d.ccy}</strong> <span class="badge" style="background:var(--dn-dim);color:var(--dn)">NẠP</span></span><span style="font-size:10px;color:var(--muted)">${d.txId ? d.txId.slice(0,18)+'…' : ''}</span></div>
+              <div style="text-align:right;"><div class="dn" style="font-weight:700;">+${d.amt.toFixed(4)} ${d.ccy}</div>${d.ccy !== 'USDT' ? `<div style="font-size:10px;color:var(--muted)">${fmtVal(d.amt)}</div>` : ''}</div>
+            </div>`;
+          });
+          html += `</div>`;
+        }
+        if (wds.length) {
+          html += `<div class="pop-section"><div class="pop-section-title">💵 Rút tiền (${wds.length})</div>`;
+          wds.forEach(w => {
+            html += `<div class="flow-item">
+              <div class="flow-info"><span><strong>${w.ccy}</strong> <span class="badge" style="background:var(--up-dim);color:var(--up)">RÚT</span></span><span style="font-size:10px;color:var(--muted)">${w.txId ? w.txId.slice(0,18)+'…' : ''}</span></div>
+              <div style="text-align:right;"><div class="up" style="font-weight:700;">-${w.amt.toFixed(4)} ${w.ccy}</div>${w.fee ? `<div style="font-size:10px;color:var(--muted)">Phí: ${w.fee} ${w.ccy}</div>` : ''}</div>
+            </div>`;
+          });
+          html += `</div>`;
+        }
+        $('popupContent').innerHTML = `<div class="pop-header"><div class="pop-title">${new Date(dateKey).toLocaleDateString('vi-VN', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}</div><button class="btn-icon" onclick="closePopup()">✕</button></div>${html}`;
+        $('popupOverlay').classList.add('open');
+      };
+
+      window.closePopup = function() { $('popupOverlay').classList.remove('open'); };
+
+      function calcMonthNet(year, month) {
+        const prefix = `${year}-${String(month).padStart(2,'0')}`;
+        let net = 0;
+        S.wds.forEach(w => { if (w.cTime && toDay(w.cTime).startsWith(prefix)) net += w.amt; });
+        S.deps.forEach(d => { if (d.cTime && toDay(d.cTime).startsWith(prefix)) net -= d.amt; });
+        return net;
+      }
+
+      function showYearPopup(year) {
+        const grid = $('yearGridContent');
+        const months = ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'];
+        let html = '';
+        for (let m = 1; m <= 12; m++) {
+          const net = calcMonthNet(year, m);
+          const cls = net > 0 ? 'up' : net < 0 ? 'dn' : '';
+          html += `<div class="year-cell" onclick="selectMonthFromPopup(${year}, ${m})"><div class="month-name">${months[m-1]}</div><div class="month-net ${cls}">${fmtPnL(net)}</div></div>`;
+        }
+        grid.innerHTML = html;
+        $('yearPopup').classList.add('show');
+        $('popupBackdrop').classList.add('show');
+      }
+
+      function hideYearPopup() {
+        $('yearPopup').classList.remove('show');
+        $('popupBackdrop').classList.remove('show');
+      }
+
+      window.selectMonthFromPopup = function(year, month) {
+        $('txMonth').value = `${year}-${String(month).padStart(2,'0')}`;
+        $('txYear').value = year;
+        hideYearPopup();
+        renderIncome();
+      };
+
+      function renderIncome() {
+        const fm = $('txMonth').value || '';
+        const fdeps = fm ? S.deps.filter(d => d.cTime && toDay(d.cTime).startsWith(fm)) : S.deps;
+        const fwds = fm ? S.wds.filter(w => w.cTime && toDay(w.cTime).startsWith(fm)) : S.wds;
+        const totDep = fdeps.reduce((s,d)=>s+d.amt,0);
+        const totWd = fwds.reduce((s,w)=>s+w.amt,0);
+        const net = totWd - totDep;
+
+        $('incNet').textContent = fmtPnL(net);
+        $('incNet').className = 'net-flow-amount ' + pc(net);
+        $('incNetSub').textContent = `${fwds.length} lần rút, ${fdeps.length} lần nạp`;
+        $('incWd').textContent = fmtVal(totWd);
+        $('incWdCnt').textContent = fwds.length + ' lần';
+        $('incDep').textContent = fmtVal(totDep);
+        $('incDepCnt').textContent = fdeps.length + ' lần';
+
+        const all = [
+          ...fdeps.map(d => ({ ts:d.cTime, type:'dep', amt:d.amt, fee:0, ccy:d.ccy, state:d.state, txId:d.txId })),
+          ...fwds.map(w => ({ ts:w.cTime, type:'wd', amt:w.amt, fee:w.fee, ccy:w.ccy, state:w.state, txId:w.txId }))
+        ].sort((a,b)=> b.ts - a.ts);
+
+        const tb = $('txBody');
+        if (!all.length) { tb.innerHTML = '<tr><td colspan="5" class="empty">Không có giao dịch</td></tr>'; return; }
+        tb.innerHTML = all.map(t => {
+          const dt = new Date(t.ts);
+          const isDep = t.type === 'dep';
+          return `<tr>
+            <td style="font-size:11px;">${dt.toLocaleDateString('vi-VN')}<br><span style="color:var(--muted);font-size:10px;">${dt.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></td>
+            <td><span class="side-badge" style="background:${isDep?'var(--dn-dim)':'var(--up-dim)'};color:${isDep?'var(--dn)':'var(--up)'}">${isDep?'NẠP':'RÚT'}</span> ${t.ccy}</td>
+            <td class="${isDep?'dn':'up'}" style="font-weight:600;">${isDep?'+':'-'}${t.amt.toFixed(4)} ${t.ccy}</td>
+            <td style="font-size:11px;">${t.fee ? t.fee + ' ' + t.ccy : '—'}</td>
+            <td style="font-size:11px;color:var(--muted);">${t.state||'—'}</td>
+          </tr>`;
+        }).join('') + `<tr style="background:var(--surface2);font-weight:700;"><td colspan="2">Dòng tiền ròng</td><td class="${pc(net)}">${fmtPnL(net)}</td><td colspan="2"></td></tr>`;
+      }
+
+      // Events
+      $('btnSync').addEventListener('click', syncOverview);
+      $('btnSettings').addEventListener('click', ()=>{
+        $('apiKeyInput').value = S.api.key; $('secretInput').value = S.api.secret;
+        $('passphraseInput').value = S.api.pass; $('proxyInput').value = S.api.proxy;
+        $('settingsOverlay').classList.add('open');
       });
-      html += `</div>`;
-    }
-    if (deps.length) {
-      html += `<div class="pop-section"><div class="pop-section-title">💸 Nạp tiền (${deps.length})</div>`;
-      deps.forEach(d => {
-        html += `<div class="flow-item">
-          <div class="flow-info"><span><strong>${d.ccy}</strong> <span class="badge" style="background:var(--dn-dim);color:var(--dn)">NẠP</span></span><span style="font-size:10px;color:var(--muted)">${d.txId ? d.txId.slice(0,18)+'…' : ''}</span></div>
-          <div style="text-align:right;"><div class="dn" style="font-weight:700;">+${d.amt.toFixed(4)} ${d.ccy}</div>${d.ccy !== 'USDT' ? `<div style="font-size:10px;color:var(--muted)">${fmtVal(d.amt)}</div>` : ''}</div>
-        </div>`;
+      $('closeSettings').addEventListener('click', ()=>$('settingsOverlay').classList.remove('open'));
+      $('saveSettings').addEventListener('click', ()=>{
+        S.api.key = $('apiKeyInput').value.trim(); S.api.secret = $('secretInput').value.trim();
+        S.api.pass = $('passphraseInput').value.trim(); S.api.proxy = $('proxyInput').value.trim();
+        save(); $('settingsOverlay').classList.remove('open'); toast('Đã lưu cài đặt'); syncOverview();
       });
-      html += `</div>`;
-    }
-    if (wds.length) {
-      html += `<div class="pop-section"><div class="pop-section-title">💵 Rút tiền (${wds.length})</div>`;
-      wds.forEach(w => {
-        html += `<div class="flow-item">
-          <div class="flow-info"><span><strong>${w.ccy}</strong> <span class="badge" style="background:var(--up-dim);color:var(--up)">RÚT</span></span><span style="font-size:10px;color:var(--muted)">${w.txId ? w.txId.slice(0,18)+'…' : ''}</span></div>
-          <div style="text-align:right;"><div class="up" style="font-weight:700;">-${w.amt.toFixed(4)} ${w.ccy}</div>${w.fee ? `<div style="font-size:10px;color:var(--muted)">Phí: ${w.fee} ${w.ccy}</div>` : ''}</div>
-        </div>`;
+      $('wipeData').addEventListener('click', ()=>{ if(confirm('Xoá dữ liệu?')) { localStorage.removeItem('okx_v5_mob'); location.reload(); } });
+      $('prevMonth').addEventListener('click', ()=>{ S.calM--; if(S.calM<1){S.calM=12;S.calY--;} renderCalendar(); });
+      $('nextMonth').addEventListener('click', ()=>{ S.calM++; if(S.calM>12){S.calM=1;S.calY++;} renderCalendar(); });
+      $('txMonth').addEventListener('change', renderIncome);
+      $('txYear').addEventListener('keydown', e => { if(e.key==='Enter') { const y = parseInt($('txYear').value); if(y && y>=2020 && y<=2099) showYearPopup(y); } });
+      $('txYear').addEventListener('blur', () => { const y = parseInt($('txYear').value); if(y && y>=2020 && y<=2099) showYearPopup(y); });
+      $('popupBackdrop').addEventListener('click', hideYearPopup);
+      $('popupOverlay').addEventListener('click', function(e) { if(e.target === this) closePopup(); });
+
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.addEventListener('click', function(){
+          document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+          this.classList.add('active');
+          document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+          $(this.dataset.screen).classList.add('active');
+        });
       });
-      html += `</div>`;
-    }
-    $('popupContent').innerHTML = `<div class="pop-header"><div class="pop-title">${new Date(dateKey).toLocaleDateString('vi-VN', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}</div><button class="btn-icon" onclick="closePopup()">✕</button></div>${html}`;
-    $('popupOverlay').classList.add('open');
-  };
+      document.querySelectorAll('.tab').forEach(btn => {
+        btn.addEventListener('click', function(){
+          const parent = this.parentElement.parentElement;
+          parent.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+          this.classList.add('active');
+          parent.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+          $(this.dataset.panel).classList.add('active');
+        });
+      });
+      document.querySelectorAll('.ccy-btn').forEach(btn => {
+        btn.addEventListener('click', function(){
+          document.querySelectorAll('.ccy-btn').forEach(b=>b.classList.remove('active'));
+          this.classList.add('active');
+          S.ccy = this.dataset.ccy; save(); renderOverview(); renderCalendar(); renderIncome();
+        });
+      });
 
-  window.closePopup = function() { $('popupOverlay').classList.remove('open'); };
-
-  function calcMonthNet(year, month) {
-    const prefix = `${year}-${String(month).padStart(2,'0')}`;
-    let net = 0;
-    S.wds.forEach(w => { if (w.cTime && toDay(w.cTime).startsWith(prefix)) net += w.amt; });
-    S.deps.forEach(d => { if (d.cTime && toDay(d.cTime).startsWith(prefix)) net -= d.amt; });
-    return net;
-  }
-
-  function showYearPopup(year) {
-    const grid = $('yearGridContent');
-    const months = ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12'];
-    let html = '';
-    for (let m = 1; m <= 12; m++) {
-      const net = calcMonthNet(year, m);
-      const cls = net > 0 ? 'up' : net < 0 ? 'dn' : '';
-      html += `<div class="year-cell" onclick="selectMonthFromPopup(${year}, ${m})"><div class="month-name">${months[m-1]}</div><div class="month-net ${cls}">${fmtPnL(net)}</div></div>`;
-    }
-    grid.innerHTML = html;
-    $('yearPopup').classList.add('show');
-    $('popupBackdrop').classList.add('show');
-  }
-
-  function hideYearPopup() {
-    $('yearPopup').classList.remove('show');
-    $('popupBackdrop').classList.remove('show');
-  }
-
-  window.selectMonthFromPopup = function(year, month) {
-    $('txMonth').value = `${year}-${String(month).padStart(2,'0')}`;
-    $('txYear').value = year;
-    hideYearPopup();
-    renderIncome();
-  };
-
-  function renderIncome() {
-    const fm = $('txMonth').value || '';
-    const fdeps = fm ? S.deps.filter(d => d.cTime && toDay(d.cTime).startsWith(fm)) : S.deps;
-    const fwds = fm ? S.wds.filter(w => w.cTime && toDay(w.cTime).startsWith(fm)) : S.wds;
-    const totDep = fdeps.reduce((s,d)=>s+d.amt,0);
-    const totWd = fwds.reduce((s,w)=>s+w.amt,0);
-    const net = totWd - totDep;
-
-    $('incNet').textContent = fmtPnL(net);
-    $('incNet').className = 'net-flow-amount ' + pc(net);
-    $('incNetSub').textContent = `${fwds.length} lần rút, ${fdeps.length} lần nạp`;
-    $('incWd').textContent = fmtVal(totWd);
-    $('incWdCnt').textContent = fwds.length + ' lần';
-    $('incDep').textContent = fmtVal(totDep);
-    $('incDepCnt').textContent = fdeps.length + ' lần';
-
-    const all = [
-      ...fdeps.map(d => ({ ts:d.cTime, type:'dep', amt:d.amt, fee:0, ccy:d.ccy, state:d.state, txId:d.txId })),
-      ...fwds.map(w => ({ ts:w.cTime, type:'wd', amt:w.amt, fee:w.fee, ccy:w.ccy, state:w.state, txId:w.txId }))
-    ].sort((a,b)=> b.ts - a.ts);
-
-    const tb = $('txBody');
-    if (!all.length) { tb.innerHTML = '<tr><td colspan="5" class="empty">Không có giao dịch</td></tr>'; return; }
-    tb.innerHTML = all.map(t => {
-      const dt = new Date(t.ts);
-      const isDep = t.type === 'dep';
-      return `<tr>
-        <td style="font-size:11px;">${dt.toLocaleDateString('vi-VN')}<br><span style="color:var(--muted);font-size:10px;">${dt.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></td>
-        <td><span class="side-badge" style="background:${isDep?'var(--dn-dim)':'var(--up-dim)'};color:${isDep?'var(--dn)':'var(--up)'}">${isDep?'NẠP':'RÚT'}</span> ${t.ccy}</td>
-        <td class="${isDep?'dn':'up'}" style="font-weight:600;">${isDep?'+':'-'}${t.amt.toFixed(4)} ${t.ccy}</td>
-        <td style="font-size:11px;">${t.fee ? t.fee + ' ' + t.ccy : '—'}</td>
-        <td style="font-size:11px;color:var(--muted);">${t.state||'—'}</td>
-      </tr>`;
-    }).join('') + `<tr style="background:var(--surface2);font-weight:700;"><td colspan="2">Dòng tiền ròng</td><td class="${pc(net)}">${fmtPnL(net)}</td><td colspan="2"></td></tr>`;
-  }
-
-  // Events
-  $('btnSync').addEventListener('click', syncOverview);
-  $('btnSettings').addEventListener('click', ()=>{
-    $('apiKeyInput').value = S.api.key; $('secretInput').value = S.api.secret;
-    $('passphraseInput').value = S.api.pass; $('proxyInput').value = S.api.proxy;
-    $('settingsOverlay').classList.add('open');
-  });
-  $('closeSettings').addEventListener('click', ()=>$('settingsOverlay').classList.remove('open'));
-  $('saveSettings').addEventListener('click', ()=>{
-    S.api.key = $('apiKeyInput').value.trim(); S.api.secret = $('secretInput').value.trim();
-    S.api.pass = $('passphraseInput').value.trim(); S.api.proxy = $('proxyInput').value.trim();
-    save(); $('settingsOverlay').classList.remove('open'); toast('Đã lưu cài đặt'); syncOverview();
-  });
-  $('wipeData').addEventListener('click', ()=>{ if(confirm('Xoá dữ liệu?')) { localStorage.removeItem('okx_v5'); location.reload(); } });
-  $('prevMonth').addEventListener('click', ()=>{ S.calM--; if(S.calM<1){S.calM=12;S.calY--;} renderCalendar(); });
-  $('nextMonth').addEventListener('click', ()=>{ S.calM++; if(S.calM>12){S.calM=1;S.calY++;} renderCalendar(); });
-  $('txMonth').addEventListener('change', renderIncome);
-  $('txYear').addEventListener('keydown', e => { if(e.key==='Enter') { const y = parseInt($('txYear').value); if(y && y>=2020 && y<=2099) showYearPopup(y); } });
-  $('txYear').addEventListener('blur', () => { const y = parseInt($('txYear').value); if(y && y>=2020 && y<=2099) showYearPopup(y); });
-  $('popupBackdrop').addEventListener('click', hideYearPopup);
-  $('popupOverlay').addEventListener('click', function(e) { if(e.target === this) closePopup(); });
-
-  document.querySelectorAll('.nav-tab').forEach(btn => {
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
-      this.classList.add('active');
-      document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-      $(this.dataset.screen).classList.add('active');
-    });
-  });
-  document.querySelectorAll('.tab').forEach(btn => {
-    btn.addEventListener('click', function(){
-      const parent = this.parentElement.parentElement;
-      parent.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-      this.classList.add('active');
-      parent.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-      $(this.dataset.panel).classList.add('active');
-    });
-  });
-  document.querySelectorAll('.ccy-btn').forEach(btn => {
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.ccy-btn').forEach(b=>b.classList.remove('active'));
-      this.classList.add('active');
-      S.ccy = this.dataset.ccy; save(); renderOverview(); renderCalendar(); renderIncome();
-    });
-  });
-
-  // Init
-  load();
-  document.querySelector(`.ccy-btn[data-ccy="${S.ccy}"]`)?.classList.add('active');
-  $('txMonth').value = new Date().toISOString().slice(0,7);
-  $('txYear').value = new Date().getFullYear();
-  renderOverview(); renderCalendar(); renderIncome();
-  if(S.api.key) syncOverview();
-  loadSheetData();
-  setInterval(syncOverview, 10000);
-  setInterval(loadSheetData, 30000);
-})();
-</script>
+      // Init
+      load();
+      document.querySelector(`.ccy-btn[data-ccy="${S.ccy}"]`)?.classList.add('active');
+      $('txMonth').value = new Date().toISOString().slice(0,7);
+      $('txYear').value = new Date().getFullYear();
+      renderOverview(); renderCalendar(); renderIncome();
+      if(S.api.key) syncOverview();
+      loadSheetData();
+      setInterval(syncOverview, 10000);
+      setInterval(loadSheetData, 30000);
+    })();
+  </script>
 </body>
 </html>
